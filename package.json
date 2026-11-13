@@ -1,0 +1,48 @@
+{
+  "name": "naseem",
+  "version": "1.0.0",
+  "description": "Naseem video downloader",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win nsis portable"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "electron": "^45.3.2",
+    "electron-builder": "^26.18.0"
+  },
+  "dependencies": {
+    "@fontsource/ibm-plex-sans-arabic": "^5.3.0"
+  },
+  "productName": "Naseem",
+  "build": {
+    "appId": "com.naseem.downloader",
+    "productName": "Naseem",
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**",
+      "build/icon.png",
+      "node_modules/@fontsource/ibm-plex-sans-arabic/**"
+    ],
+    "win": {
+      "icon": "build/icon.png",
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "Naseem-Setup-${version}.exe"
+    },
+    "portable": {
+      "artifactName": "Naseem-Portable-${version}.exe"
+    }
+  }
+}

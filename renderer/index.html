@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https: http: data:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; script-src 'self'">
+  <title>Naseem</title>
+  <link rel="stylesheet" href="../node_modules/@fontsource/ibm-plex-sans-arabic/400.css">
+  <link rel="stylesheet" href="../node_modules/@fontsource/ibm-plex-sans-arabic/500.css">
+  <link rel="stylesheet" href="../node_modules/@fontsource/ibm-plex-sans-arabic/600.css">
+  <link rel="stylesheet" href="../node_modules/@fontsource/ibm-plex-sans-arabic/700.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="titlebar">
+    <div class="brand"><span class="logo"></span><span data-i18n="appName"></span></div>
+  </header>
+
+  <div class="layout">
+    <nav class="side">
+      <button class="nav active" data-view="home"><span class="ic" data-icon="download"></span><span data-i18n="navHome"></span><span class="badge" id="activeBadge" hidden></span></button>
+      <button class="nav" data-view="history"><span class="ic" data-icon="history"></span><span data-i18n="navHistory"></span></button>
+      <button class="nav" data-view="settings"><span class="ic" data-icon="settings"></span><span data-i18n="navSettings"></span></button>
+      <div class="side-foot">
+        <button class="ghost small" id="openDirBtn"><span class="ic" data-icon="folder"></span><span data-i18n="openFolder"></span></button>
+        <div class="engine-pill" id="enginePill"></div>
+      </div>
+    </nav>
+
+    <main>
+      <!-- HOME -->
+      <section class="view" id="view-home">
+        <div id="engineBanner" class="banner" hidden>
+          <div>
+            <strong data-i18n="engineMissingTitle"></strong>
+            <p data-i18n="engineMissingBody"></p>
+            <div class="progress slim" id="engineProg" hidden><div></div></div>
+            <small id="engineProgText"></small>
+          </div>
+          <button class="primary" id="installEngineBtn" data-i18n="installEngine"></button>
+        </div>
+
+        <div class="hero">
+          <h1 data-i18n="heroTitle"></h1>
+          <p class="muted" data-i18n="heroSub"></p>
+          <div class="urlbar" id="urlbar">
+            <span class="ic" data-icon="link"></span>
+            <input id="urlInput" type="text" spellcheck="false" autocomplete="off">
+            <button class="ghost" id="pasteBtn" data-i18n="paste"></button>
+            <button class="primary" id="fetchBtn"><span data-i18n="fetch"></span></button>
+          </div>
+          <div class="row-links">
+            <button class="link" id="batchToggle" data-i18n="batchMode"></button>
+          </div>
+          <div id="batchBox" class="card" hidden>
+            <textarea id="batchInput" rows="5" spellcheck="false"></textarea>
+            <div class="row">
+              <div class="seg" id="batchMode">
+                <button data-v="video" class="on" data-i18n="video"></button>
+                <button data-v="audio" data-i18n="audio"></button>
+              </div>
+              <select id="batchQuality"></select>
+              <span class="grow"></span>
+              <button class="primary" id="batchAdd" data-i18n="addAll"></button>
+            </div>
+          </div>
+        </div>
+
+        <div id="clipBar" class="clipbar" hidden>
+          <span class="ic" data-icon="clipboard"></span>
+          <span class="clip-text"><span data-i18n="clipDetected"></span> <bdi id="clipUrl"></bdi></span>
+          <button class="primary small" id="clipFetch" data-i18n="fetch"></button>
+          <button class="ghost small" id="clipDismiss" data-i18n="dismiss"></button>
+        </div>
+
+        <div id="preview"></div>
+
+        <div class="section-head">
+          <h2 data-i18n="downloads"></h2>
+          <span class="grow"></span>
+          <button class="ghost small" id="pauseAllBtn" data-i18n="pauseAll"></button>
+          <button class="ghost small" id="resumeAllBtn" data-i18n="resumeAll"></button>
+          <button class="ghost small" id="clearBtn" data-i18n="clearFinished"></button>
+        </div>
+        <div id="queue" class="queue"></div>
+        <div id="queueEmpty" class="empty"><span class="ic big" data-icon="inbox"></span><p data-i18n="queueEmpty"></p></div>
+      </section>
+
+      <!-- HISTORY -->
+      <section class="view" id="view-history" hidden>
+        <div class="section-head">
+          <h2 data-i18n="navHistory"></h2>
+          <span class="grow"></span>
+          <input id="historySearch" class="search" type="search">
+          <select id="historyFilter">
+            <option value="all" data-i18n="all"></option>
+            <option value="video" data-i18n="video"></option>
+            <option value="audio" data-i18n="audio"></option>
+          </select>
+          <button class="ghost small danger" id="historyClear" data-i18n="clearAll"></button>
+        </div>
+        <div id="historyStats" class="stats"></div>
+        <div id="historyList" class="queue"></div>
+        <div id="historyEmpty" class="empty" hidden><span class="ic big" data-icon="history"></span><p data-i18n="historyEmpty"></p></div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section class="view" id="view-settings" hidden>
+        <div class="section-head"><h2 data-i18n="navSettings"></h2></div>
+        <div id="settingsForm" class="settings"></div>
+      </section>
+    </main>
+  </div>
+
+  <div id="dropOverlay" class="drop" hidden><div><span class="ic big" data-icon="download"></span><p data-i18n="dropHere"></p></div></div>
+  <div id="toasts" class="toasts"></div>
+  <script src="app.js"></script>
+</body>
+</html>
