@@ -225,3 +225,67 @@ main::-webkit-scrollbar-thumb, .pl-list::-webkit-scrollbar-thumb { background: v
 @keyframes indet-rtl { 0% { transform: translateX(120%); } 100% { transform: translateX(-320%); } }
 
 @media (max-width: 960px) { .pv { grid-template-columns: 1fr; } .thumb { max-width: 420px; } }
+
+/* ===================== Lain theme ===================== */
+[data-theme="lain"] {
+  --bg: #0b090a;
+  --bg-2: #100c0e;
+  --panel: #151013;
+  --panel-2: #1d1519;
+  --line: #33232a;
+  --text: #e4d9dc;
+  --muted: #8f7c83;
+  --accent: #d9465f;
+  --accent-2: #9e5a6e;
+  --accent-ink: #0b090a;
+  --ok: #7fb58a;
+  --warn: #d6a24a;
+  --err: #ff5c6c;
+  --shadow: 0 0 0 transparent;
+}
+/* Monospace for Latin only; Arabic letters fall through to IBM Plex Sans Arabic */
+@font-face { font-family: "Lain Mono"; font-weight: 100 500; src: local("Cascadia Mono"), local("CascadiaMono-Regular"), local("Consolas");
+  unicode-range: U+0000-024F, U+2000-206F, U+20A0-20CF, U+2100-23FF; }
+@font-face { font-family: "Lain Mono"; font-weight: 600 900; src: local("Cascadia Mono Bold"), local("CascadiaMono-Bold"), local("Consolas Bold");
+  unicode-range: U+0000-024F, U+2000-206F, U+20A0-20CF, U+2100-23FF; }
+[data-theme="lain"] body { font-family: "Lain Mono", "IBM Plex Sans Arabic", monospace; }
+[data-theme="lain"] main { background: radial-gradient(1100px 420px at 50% -8%, rgba(217, 70, 95, .09), transparent 70%), var(--bg); }
+
+/* CRT scanlines + vignette over the whole window (never blocks clicks) */
+[data-theme="lain"] body::before,
+[data-theme="lain"] body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 100; }
+[data-theme="lain"] body::before { background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, .5) 100%); }
+[data-theme="lain"] body::after { background: repeating-linear-gradient(to bottom, transparent 0 2px, rgba(0, 0, 0, .22) 2px 3px); animation: lain-roll 9s linear infinite; }
+
+/* sharp, terminal-like corners */
+[data-theme="lain"] :is(.card, .job, .urlbar, .group, .stat, .banner, .clipbar, .thumb, .seg, .seg button, .primary, .ghost, .icon-btn,
+  select, .search, .time-in, textarea, .field input, .nav, .pl-list, .engine-pill, .toast, .tag, .badge, .job .jt, .pl-item img, .drop) { border-radius: 2px; }
+
+[data-theme="lain"] .primary { background: var(--accent); color: var(--accent-ink); box-shadow: 0 0 14px rgba(217, 70, 95, .35); }
+[data-theme="lain"] .primary:hover { filter: brightness(1.12); box-shadow: 0 0 20px rgba(217, 70, 95, .55); }
+[data-theme="lain"] .urlbar:focus-within { box-shadow: 0 0 0 1px var(--accent), 0 0 22px rgba(217, 70, 95, .22); }
+[data-theme="lain"] .progress > div { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+[data-theme="lain"] .progress.done > div { background: var(--ok); box-shadow: none; }
+[data-theme="lain"] .logo { filter: hue-rotate(150deg) saturate(.85); }
+[data-theme="lain"] :is(.thumb img, .pl-item img) , [data-theme="lain"] .job .jt { filter: saturate(.7) contrast(1.06); }
+
+/* glitchy title with a blinking cursor */
+[data-theme="lain"] .hero h1 { text-shadow: -1.5px 0 rgba(255, 60, 90, .65), 1.5px 0 rgba(90, 220, 255, .3); animation: lain-glitch 7s infinite steps(1); }
+[data-theme="lain"] .hero h1::after { content: "_"; color: var(--accent); margin-inline-start: 4px; animation: lain-blink 1.05s steps(1) infinite; }
+[data-theme="lain"] .section-head h2::before { content: "// "; color: var(--accent); }
+[data-theme="lain"] .brand::after { content: "// wired"; color: var(--muted); font-weight: 400; font-size: 12px; margin-left: 2px; }
+[data-theme="lain"] .group h4 { text-transform: uppercase; letter-spacing: .12em; font-size: 11.5px; }
+
+@keyframes lain-blink { 50% { opacity: 0; } }
+@keyframes lain-roll { to { background-position: 0 30px; } }
+@keyframes lain-glitch {
+  0%, 89%, 100% { transform: none; }
+  90% { transform: translate(-2px, 1px) skewX(-4deg); text-shadow: -3px 0 rgba(255, 60, 90, .9), 3px 0 rgba(90, 220, 255, .5); }
+  91% { transform: translate(2px, -1px); }
+  92% { transform: none; }
+  95% { transform: translateX(1px); clip-path: inset(30% 0 40% 0); }
+  96% { transform: none; clip-path: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-theme="lain"] body::after, [data-theme="lain"] .hero h1, [data-theme="lain"] .hero h1::after { animation: none; }
+}

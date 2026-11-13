@@ -428,6 +428,7 @@ function startClipboardWatch() {
 
 // ---------- window ----------
 function themeColors() {
+  if (settings.theme === 'lain') return { color: '#0b090a', symbolColor: '#e4d9dc' };
   const dark = settings.theme === 'dark' || (settings.theme === 'system' && nativeTheme.shouldUseDarkColors);
   return dark ? { color: '#0d1117', symbolColor: '#c9d1d9' } : { color: '#f4f6fa', symbolColor: '#1f2633' };
 }
