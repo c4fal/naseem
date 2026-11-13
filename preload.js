@@ -22,6 +22,6 @@ contextBridge.exposeInMainWorld('api', {
     openFile: (p) => inv('shell:openFile', p), showInFolder: (p) => inv('shell:showInFolder', p),
     openDir: () => inv('shell:openDir'), openExternal: (u) => inv('shell:openExternal', u), pickDir: () => inv('dialog:pickDir'),
   },
-  bg: { get: () => inv('bg:get'), pick: () => inv('bg:pick'), clear: () => inv('bg:clear') },
+  images: { get: (slot) => inv('img:get', slot), pick: (slot) => inv('img:pick', slot), clear: (slot) => inv('img:clear', slot) },
   clipboard: { read: () => inv('clipboard:read'), write: (t) => inv('clipboard:write', t), onUrl: on('clipboard:url') },
 });

@@ -40,7 +40,7 @@
 | 🕘 **History** | Searchable history with stats, one-click re-download, open file or folder |
 | ⏭️ **SponsorBlock** | Optionally remove sponsor and self-promo segments from YouTube videos |
 | 🍪 **Accounts & network** | Use cookies from Chrome, Edge, Firefox, Brave…; proxy and speed limit |
-| 🌗 **Made for you** | Arabic (RTL) and English; dark, light, system or the blue cyber-styled **Lain** theme, plus your own background image, desktop notifications |
+| 🌗 **Made for you** | Arabic (RTL) and English; dark, light, system or the blue cyber-styled **Lain** theme, plus your own background and side images (GIFs too) with animated effects, desktop notifications |
 | 🔄 **Self-updating engine** | Install and update yt-dlp + FFmpeg from inside the app |
 
 ## 📸 Screenshots
@@ -119,7 +119,7 @@ docs/            README images
 - مراقبة الحافظة، وسحب الرابط وإفلاته، و<kbd>Ctrl</kbd>+<kbd>V</kbd> من أي مكان
 - سجل تنزيلات مع البحث والإحصائيات
 - حذف الإعلانات المدمجة (SponsorBlock)، وكوكيز المتصفح، وبروكسي، وحد للسرعة
-- مظهر داكن وفاتح ومظهر «Lain» الأزرق السايبري، وصورة خلفية من اختيارك، وإشعارات عند الانتهاء
+- مظهر داكن وفاتح ومظهر «Lain» الأزرق السايبري، وصورة خلفية وصورة جانبية (حتى GIF) من اختيارك مع تأثيرات متحركة، وإشعارات عند الانتهاء
 - تحديث المحرك بضغطة زر
 
 ### طريقة الاستخدام

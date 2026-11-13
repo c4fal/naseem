@@ -286,18 +286,74 @@ main::-webkit-scrollbar-thumb, .pl-list::-webkit-scrollbar-thumb { background: v
   95% { transform: translateX(1px); clip-path: inset(30% 0 40% 0); }
   96% { transform: none; clip-path: none; }
 }
-@media (prefers-reduced-motion: reduce) {
-  [data-theme="lain"] body::after, [data-theme="lain"] .hero h1, [data-theme="lain"] .hero h1::after { animation: none; }
-}
+[data-motion="off"][data-theme="lain"] body::after, [data-motion="off"][data-theme="lain"] .hero h1, [data-motion="off"][data-theme="lain"] .hero h1::after { animation: none; }
 
-/* ===================== custom background image ===================== */
-html main.has-bg {
-  background:
-    linear-gradient(color-mix(in srgb, var(--bg) var(--bg-dim, 75%), transparent), color-mix(in srgb, var(--bg) var(--bg-dim, 75%), transparent)),
-    var(--bg-img) center / cover no-repeat,
-    var(--bg);
-}
-/* in Lain the picture is turned into a blue monochrome */
-html[data-theme="lain"] main.has-bg { background-blend-mode: normal, luminosity, normal; }
-main.has-bg :is(.card, .job, .group, .stat, .urlbar, .clipbar) { background-color: color-mix(in srgb, var(--panel) 80%, transparent); backdrop-filter: blur(8px); }
+/* ===================== custom images: background + side art ===================== */
+/* both layers sit fixed over the main area (right of / left of the sidebar), behind the page content */
+.view { position: relative; z-index: 1; }
+.bg-art, .side-art { position: fixed; top: 40px; bottom: 0; pointer-events: none; z-index: 0; }
+.bg-art { inset-inline-start: 210px; inset-inline-end: 0; overflow: hidden; display: none; }
+main.has-bg .bg-art, [data-theme="lain"] .bg-art { display: block; }
+.bg-img { position: absolute; inset: -6%; background: center / cover no-repeat; z-index: 0; }
+main:not(.has-bg) .bg-img { display: none; }
+main.has-bg .bg-art::after { content: ""; position: absolute; inset: 0; z-index: 0; background: color-mix(in srgb, var(--bg) var(--bg-dim, 75%), transparent); }
+.bg-roll { display: none; }
+
+.side-art { inset-inline-end: 0; width: min(42vw, 520px); }
+.side-art img { position: absolute; bottom: 0; inset-inline-end: 0; max-height: 80vh; max-width: 100%; object-fit: contain; opacity: var(--art-opacity, .55); }
+.side-art .art-ghost { display: none; }
+
+main:is(.has-bg, .has-art) :is(.card, .job, .group, .stat, .urlbar, .clipbar) { background-color: color-mix(in srgb, var(--panel) 80%, transparent); backdrop-filter: blur(8px); }
 .range { width: 200px; accent-color: var(--accent); }
+
+/* ---------- Lain: everything moves a little ---------- */
+/* slow camera drift + rare power flicker on the background picture */
+[data-theme="lain"] .bg-img { animation: lain-drift 38s ease-in-out infinite alternate, lain-flicker 9s steps(1) infinite; }
+/* faint grid crawling up from the bottom, like a signal floor */
+[data-theme="lain"] .bg-art::before {
+  content: ""; position: absolute; inset: 0; z-index: 1;
+  background-image: linear-gradient(rgba(74, 168, 255, .07) 1px, transparent 1px), linear-gradient(90deg, rgba(74, 168, 255, .07) 1px, transparent 1px);
+  background-size: 48px 48px;
+  -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 65%); mask-image: linear-gradient(to top, #000 0%, transparent 65%);
+  animation: lain-grid 5s linear infinite;
+}
+/* a bright interference band sweeping down the screen */
+[data-theme="lain"] .bg-roll {
+  display: block; position: absolute; left: 0; right: 0; top: -160px; height: 160px; z-index: 1;
+  background: linear-gradient(to bottom, transparent, rgba(74, 168, 255, .06) 40%, rgba(170, 215, 255, .13) 50%, rgba(74, 168, 255, .06) 60%, transparent);
+  animation: lain-sweep 8s linear infinite;
+}
+/* side art floats, flickers and tears apart for a split second */
+[data-theme="lain"] .side-art { animation: lain-float 9s ease-in-out infinite; }
+[data-theme="lain"] .side-art .art-main { filter: drop-shadow(0 0 18px rgba(74, 168, 255, .35)); animation: lain-art-flicker 6.5s steps(1) infinite; }
+[data-theme="lain"] .side-art .art-ghost { display: block; opacity: 0; mix-blend-mode: screen; filter: hue-rotate(180deg) saturate(2.2) brightness(1.3); animation: lain-art-ghost 6.5s steps(1) infinite; }
+
+@keyframes lain-drift { from { transform: scale(1) translate(0, 0); } to { transform: scale(1.1) translate(-2.5%, -1.5%); } }
+@keyframes lain-flicker {
+  0%, 93%, 100% { filter: none; }
+  94% { filter: brightness(1.45) contrast(1.15); }
+  95% { filter: none; }
+  96.5% { filter: brightness(.7) hue-rotate(-12deg); }
+  97% { filter: none; }
+}
+@keyframes lain-grid { to { background-position: 0 -48px, 0 0; } }
+@keyframes lain-sweep { to { transform: translateY(calc(100vh + 200px)); } }
+@keyframes lain-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+@keyframes lain-art-flicker {
+  0%, 86%, 100% { opacity: var(--art-opacity, .55); transform: none; clip-path: none; }
+  87% { opacity: calc(var(--art-opacity, .55) * .35); }
+  88% { opacity: var(--art-opacity, .55); transform: translateX(-6px) skewX(-3deg); clip-path: inset(18% 0 52% 0); }
+  89% { transform: translateX(5px); clip-path: inset(58% 0 14% 0); }
+  90% { transform: none; clip-path: none; }
+  95% { opacity: calc(var(--art-opacity, .55) * .6); }
+  96% { opacity: var(--art-opacity, .55); }
+}
+@keyframes lain-art-ghost {
+  0%, 86%, 100% { opacity: 0; transform: none; clip-path: none; }
+  87% { opacity: .6; transform: translate(-10px, 2px); clip-path: inset(8% 0 62% 0); }
+  88% { opacity: .5; transform: translate(8px, -3px); clip-path: inset(44% 0 30% 0); }
+  89% { opacity: .45; transform: translate(-4px, 0); clip-path: inset(72% 0 4% 0); }
+  90% { opacity: 0; }
+}
+[data-motion="off"][data-theme="lain"] :is(.bg-img, .bg-roll, .side-art, .side-art img), [data-motion="off"][data-theme="lain"] .bg-art::before { animation: none; }
+[data-motion="off"][data-theme="lain"] .bg-roll { display: none; }

@@ -35,8 +35,11 @@ const DEFAULTS = {
   autoFetchOnPaste: true,
   lang: 'ar',
   theme: 'dark',
+  motion: 'on',
   bgImage: '',
   bgVisibility: 25,
+  artImage: '',
+  artVisibility: 55,
 };
 
 const readJSON = (f, d) => { try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch { return d; } };
@@ -338,31 +341,39 @@ ipcMain.handle('dialog:pickDir', async () => {
 ipcMain.handle('clipboard:read', () => clipboard.readText());
 ipcMain.handle('clipboard:write', (_e, t) => clipboard.writeText(String(t)));
 
-// ---------- custom background image (a copy is kept in the app's data folder, never uploaded) ----------
-const BG_TYPES = { '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.gif': 'image/gif' };
-function bgDataUrl() {
-  if (!settings.bgImage) return null;
-  const p = path.join(DATA, settings.bgImage);
-  try { return `data:${BG_TYPES[path.extname(p).toLowerCase()]};base64,${fs.readFileSync(p).toString('base64')}`; } catch { return null; }
+// ---------- custom images: background + side art (copies stay in the app's data folder, never uploaded) ----------
+const IMG_TYPES = { '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.gif': 'image/gif' };
+const IMG_SLOTS = { bg: { key: 'bgImage', base: 'background' }, art: { key: 'artImage', base: 'side-art' } };
+function imgDataUrl(slot) {
+  const name = settings[IMG_SLOTS[slot].key];
+  if (!name) return null;
+  const p = path.join(DATA, name);
+  try { return `data:${IMG_TYPES[path.extname(p).toLowerCase()]};base64,${fs.readFileSync(p).toString('base64')}`; } catch { return null; }
 }
-function removeBgFiles() { for (const f of fs.readdirSync(DATA)) if (/^background.[a-z]+$/i.test(f)) fs.rmSync(path.join(DATA, f), { force: true }); }
-ipcMain.handle('bg:get', () => bgDataUrl());
-ipcMain.handle('bg:pick', async () => {
+function removeImgFiles(slot) {
+  const re = new RegExp(`^${IMG_SLOTS[slot].base}\\.[a-z]+$`, 'i');
+  for (const f of fs.readdirSync(DATA)) if (re.test(f)) fs.rmSync(path.join(DATA, f), { force: true });
+}
+ipcMain.handle('img:get', (_e, slot) => (IMG_SLOTS[slot] ? imgDataUrl(slot) : null));
+ipcMain.handle('img:pick', async (_e, slot) => {
+  if (!IMG_SLOTS[slot]) return { ok: false };
   const r = await dialog.showOpenDialog(win, { properties: ['openFile'], filters: [{ name: 'Images', extensions: ['png', 'jpg', 'jpeg', 'webp', 'gif'] }] });
   if (r.canceled || !r.filePaths[0]) return { ok: false };
   const src = r.filePaths[0];
   const ext = path.extname(src).toLowerCase();
-  if (!BG_TYPES[ext]) return { ok: false, error: 'TYPE' };
+  if (!IMG_TYPES[ext]) return { ok: false, error: 'TYPE' };
   if (fs.statSync(src).size > 20 * 1024 * 1024) return { ok: false, error: 'TOO_BIG' };
-  removeBgFiles();
-  fs.copyFileSync(src, path.join(DATA, 'background' + ext));
-  settings = { ...settings, bgImage: 'background' + ext };
+  removeImgFiles(slot);
+  const name = IMG_SLOTS[slot].base + ext;
+  fs.copyFileSync(src, path.join(DATA, name));
+  settings = { ...settings, [IMG_SLOTS[slot].key]: name };
   writeJSON(SETTINGS_FILE, settings);
-  return { ok: true, url: bgDataUrl(), settings };
+  return { ok: true, url: imgDataUrl(slot), settings };
 });
-ipcMain.handle('bg:clear', () => {
-  removeBgFiles();
-  settings = { ...settings, bgImage: '' };
+ipcMain.handle('img:clear', (_e, slot) => {
+  if (!IMG_SLOTS[slot]) return settings;
+  removeImgFiles(slot);
+  settings = { ...settings, [IMG_SLOTS[slot].key]: '' };
   writeJSON(SETTINGS_FILE, settings);
   return settings;
 });
