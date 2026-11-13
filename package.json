@@ -1,6 +1,6 @@
 {
   "name": "naseem",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Naseem video downloader",
   "main": "main.js",
   "scripts": {
