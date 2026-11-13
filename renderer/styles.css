@@ -45,8 +45,7 @@ bdi { unicode-bidi: isolate; }
 /* titlebar */
 .titlebar { direction: ltr; height: 40px; display: flex; align-items: center; padding: 0 16px; -webkit-app-region: drag; border-bottom: 1px solid var(--line); background: var(--bg); }
 .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: .2px; }
-.logo { width: 22px; height: 22px; border-radius: 7px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); position: relative; }
-.logo::after { content: ""; position: absolute; inset: 6px 5px; border: 2px solid var(--accent-ink); border-top: 0; border-radius: 0 0 6px 6px; }
+.logo { width: 22px; height: 22px; border-radius: 6px; display: block; }
 
 .layout { display: flex; height: calc(100% - 40px); }
 
@@ -96,6 +95,10 @@ button { cursor: pointer; }
 .urlbar .ic { color: var(--muted); }
 .urlbar input { flex: 1; min-width: 0; background: none; border: 0; outline: none; padding: 9px 4px; font-size: 15px; direction: ltr; text-align: left; user-select: text; }
 [dir="rtl"] .urlbar input:placeholder-shown { direction: rtl; text-align: right; }
+/* titles can be in any language: pick direction from the text itself */
+.job .title, .pv h3, .pl-head h3, .pl-item .t { unicode-bidi: plaintext; }
+[dir="rtl"] .job .title, [dir="rtl"] .pv h3, [dir="rtl"] .pl-item .t { text-align: right; }
+[dir="ltr"] .job .title, [dir="ltr"] .pv h3, [dir="ltr"] .pl-item .t { text-align: left; }
 .row-links { display: flex; justify-content: center; margin-top: 8px; }
 
 .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; margin-top: 14px; text-align: start; }

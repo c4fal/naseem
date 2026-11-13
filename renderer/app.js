@@ -141,16 +141,19 @@ function showView(v) {
 }
 
 // ---------------- engine ----------------
-async function refreshEngine() {
-  S.engine = await api.engine.status();
+function renderEnginePill() {
+  if (!S.engine) return false;
   const ok = !!(S.engine.ytdlp && S.engine.ffmpeg);
   $('#engineBanner').hidden = ok;
-  const pill = $('#enginePill');
-  pill.replaceChildren(
+  $('#enginePill').replaceChildren(
     h('div', {}, h('span', { class: `dot ${ok ? '' : 'bad'}` }), h('b', {}, ok ? t('engineReady') : t('engineMissing'))),
     S.engine.ytdlp ? h('div', {}, 'yt-dlp ', h('bdi', {}, S.engine.ytdlp)) : null,
   );
   return ok;
+}
+async function refreshEngine() {
+  S.engine = await api.engine.status();
+  return renderEnginePill();
 }
 
 async function installEngine(which = 'all') {
@@ -394,7 +397,7 @@ function renderHistory() {
 // ---------------- settings ----------------
 async function saveSetting(patch) {
   S.settings = await api.settings.set(patch);
-  if ('lang' in patch) { applyLang(); renderSettings(); refreshEngine(); for (const j of S.jobs.values()) { const el = document.getElementById(`job-${j.id}`); if (el) fillJob(el, j); } fillQualitySelect($('#batchQuality'), $('#batchQuality').value); }
+  if ('lang' in patch) { applyLang(); renderSettings(); renderEnginePill(); for (const j of S.jobs.values()) { const el = document.getElementById(`job-${j.id}`); if (el) fillJob(el, j); } fillQualitySelect($('#batchQuality'), $('#batchQuality').value); }
   if ('theme' in patch) applyTheme();
 }
 
