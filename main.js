@@ -456,7 +456,9 @@ function createWindow() {
 app.on('second-instance', () => { if (win) { if (win.isMinimized()) win.restore(); win.focus(); } });
 app.whenReady().then(() => {
   Menu.setApplicationMenu(null);
-  app.setAppUserModelId('com.naseem.downloader');
+  // Dev runs (plain electron.exe) get their own ID; sharing the installed app's ID makes the
+  // Start menu show the dev "Electron" shortcut in place of Naseem.
+  app.setAppUserModelId(app.isPackaged ? 'com.naseem.downloader' : 'com.naseem.downloader.dev');
   createWindow();
   startClipboardWatch();
 });
