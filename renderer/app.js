@@ -23,7 +23,7 @@ const I18N = {
     s_container: 'حاوية الفيديو', s_h264: 'تفضيل H.264', s_h264Hint: 'أكثر توافقًا مع الهواتف والمشغلات', s_subs: 'تضمين الترجمة افتراضيًا', s_subLangs: 'لغات الترجمة', s_subLangsHint: 'مثل ar,en',
     s_sponsor: 'حذف المقاطع الإعلانية (SponsorBlock)', s_sponsorHint: 'يحذف الرعاية والترويج من فيديوهات يوتيوب', s_audioFmt: 'صيغة الصوت', s_thumb: 'تضمين الصورة المصغرة', s_thumbHint: 'كغلاف للملف',
     s_cookies: 'استخدام كوكيز المتصفح', s_cookiesHint: 'للمحتوى الخاص أو المقيد بالعمر', none: 'بدون', s_proxy: 'بروكسي', s_proxyHint: 'مثل socks5://127.0.0.1:1080', s_rate: 'حد السرعة', s_rateHint: 'مثل 2M أو 500K (فارغ = بلا حد)',
-    s_clip: 'مراقبة الحافظة', s_clipHint: 'اقتراح الروابط المنسوخة تلقائيًا', s_autofetch: 'جلب تلقائي عند اللصق', s_notify: 'إشعار عند اكتمال التنزيل', s_lang: 'اللغة', s_theme: 'المظهر', dark: 'داكن', light: 'فاتح', system: 'حسب النظام', lain: 'لين (Lain)',
+    s_clip: 'مراقبة الحافظة', s_clipHint: 'اقتراح الروابط المنسوخة تلقائيًا', s_autofetch: 'جلب تلقائي عند اللصق', s_notify: 'إشعار عند اكتمال التنزيل', s_lang: 'اللغة', s_theme: 'المظهر', dark: 'داكن', light: 'فاتح', system: 'حسب النظام', lain: 'لين (Lain)', s_bg: 'صورة الخلفية', s_bgHint: 'صورة من جهازك تظهر خلف البرنامج', s_bgPick: 'اختيار صورة', s_bgClear: 'إزالة', s_bgVis: 'وضوح الصورة', bgTooBig: 'الصورة أكبر من 20 ميغابايت',
     e_ytdlp: 'yt-dlp', e_ffmpeg: 'FFmpeg', e_update: 'تحديث المحرك', e_reinstall: 'إعادة التثبيت', notInstalled: 'غير مثبت', updating: 'جارٍ التحديث…', installing: 'جارٍ التثبيت…', e_done: 'تم بنجاح',
     eng_ytdlp: 'تنزيل yt-dlp', eng_ffmpeg: 'تنزيل FFmpeg', eng_extract: 'فك الضغط…', engineReady: 'المحرك جاهز', engineMissing: 'المحرك غير مثبت',
     ENGINE_MISSING: 'المحرك غير مثبت. ثبّته من الأعلى أولًا.', approx: '≈',
@@ -48,7 +48,7 @@ const I18N = {
     s_container: 'Video container', s_h264: 'Prefer H.264', s_h264Hint: 'Best compatibility with phones and players', s_subs: 'Embed subtitles by default', s_subLangs: 'Subtitle languages', s_subLangsHint: 'e.g. ar,en',
     s_sponsor: 'Remove sponsor segments (SponsorBlock)', s_sponsorHint: 'Cuts sponsors and self-promo from YouTube videos', s_audioFmt: 'Audio format', s_thumb: 'Embed thumbnail', s_thumbHint: 'As cover art',
     s_cookies: 'Use browser cookies', s_cookiesHint: 'For private or age-restricted content', none: 'None', s_proxy: 'Proxy', s_proxyHint: 'e.g. socks5://127.0.0.1:1080', s_rate: 'Speed limit', s_rateHint: 'e.g. 2M or 500K (empty = unlimited)',
-    s_clip: 'Watch clipboard', s_clipHint: 'Suggest copied links automatically', s_autofetch: 'Auto-fetch on paste', s_notify: 'Notify when a download finishes', s_lang: 'Language', s_theme: 'Theme', dark: 'Dark', light: 'Light', system: 'System', lain: 'Lain',
+    s_clip: 'Watch clipboard', s_clipHint: 'Suggest copied links automatically', s_autofetch: 'Auto-fetch on paste', s_notify: 'Notify when a download finishes', s_lang: 'Language', s_theme: 'Theme', dark: 'Dark', light: 'Light', system: 'System', lain: 'Lain', s_bg: 'Background image', s_bgHint: 'A picture from your computer shown behind the app', s_bgPick: 'Choose image', s_bgClear: 'Remove', s_bgVis: 'Image visibility', bgTooBig: 'Image is larger than 20 MB',
     e_ytdlp: 'yt-dlp', e_ffmpeg: 'FFmpeg', e_update: 'Update engine', e_reinstall: 'Reinstall', notInstalled: 'Not installed', updating: 'Updating…', installing: 'Installing…', e_done: 'Done',
     eng_ytdlp: 'Downloading yt-dlp', eng_ffmpeg: 'Downloading FFmpeg', eng_extract: 'Extracting…', engineReady: 'Engine ready', engineMissing: 'Engine missing',
     ENGINE_MISSING: 'Engine not installed. Install it from the banner first.', approx: '~',
@@ -125,6 +125,28 @@ function applyLang() {
   $('#batchInput').placeholder = t('batchPh');
   $('#historySearch').placeholder = t('searchPh');
   document.title = t('appName');
+}
+async function applyBackground(url) {
+  if (url === undefined) url = S.settings.bgImage ? await api.bg.get() : null;
+  const m = document.querySelector('main');
+  m.classList.toggle('has-bg', !!url);
+  if (url) m.style.setProperty('--bg-img', `url("${url}")`); else m.style.removeProperty('--bg-img');
+  m.style.setProperty('--bg-dim', `${100 - (S.settings.bgVisibility ?? 25)}%`);
+}
+function bgControl() {
+  const pick = h('button', { class: 'ghost small', onclick: async () => {
+    const r = await api.bg.pick();
+    if (r.ok) { S.settings = r.settings; applyBackground(r.url); renderSettings(); }
+    else if (r.error === 'TOO_BIG') toast(t('bgTooBig'), 'err');
+  } }, t('s_bgPick'));
+  const clear = S.settings.bgImage ? h('button', { class: 'ghost small danger', onclick: async () => { S.settings = await api.bg.clear(); applyBackground(null); renderSettings(); } }, t('s_bgClear')) : null;
+  return h('div', { class: 'opt-row' }, pick, clear);
+}
+function bgRange() {
+  const r = h('input', { type: 'range', class: 'range', min: 5, max: 70, value: S.settings.bgVisibility ?? 25 });
+  r.addEventListener('input', () => document.querySelector('main').style.setProperty('--bg-dim', `${100 - r.value}%`));
+  r.addEventListener('change', () => saveSetting({ bgVisibility: +r.value }));
+  return r;
 }
 function applyTheme() {
   const th = S.settings.theme === 'system' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : S.settings.theme;
@@ -430,7 +452,9 @@ function renderSettings() {
       field(t('s_theme'), null, selectOf('theme', [['dark', t('dark')], ['light', t('light')], ['system', t('system')], ['lain', t('lain')]])),
       field(t('s_clip'), t('s_clipHint'), sw('clipboardWatch')),
       field(t('s_autofetch'), null, sw('autoFetchOnPaste')),
-      field(t('s_notify'), null, sw('notify'))),
+      field(t('s_notify'), null, sw('notify')),
+      field(t('s_bg'), t('s_bgHint'), bgControl()),
+      S.settings.bgImage ? field(t('s_bgVis'), null, bgRange()) : null),
     h('div', { class: 'group' }, h('h4', {}, t('g_download')),
       field(t('s_dir'), t('s_dirHint'), dirCtl),
       field(t('s_conc'), t('s_concHint'), conc),
@@ -525,6 +549,7 @@ function bind() {
 (async function init() {
   S.settings = await api.settings.get();
   applyTheme();
+  applyBackground();
   applyLang();
   bind();
   applyLang();

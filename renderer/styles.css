@@ -228,16 +228,16 @@ main::-webkit-scrollbar-thumb, .pl-list::-webkit-scrollbar-thumb { background: v
 
 /* ===================== Lain theme ===================== */
 [data-theme="lain"] {
-  --bg: #0b090a;
-  --bg-2: #100c0e;
-  --panel: #151013;
-  --panel-2: #1d1519;
-  --line: #33232a;
-  --text: #e4d9dc;
-  --muted: #8f7c83;
-  --accent: #d9465f;
-  --accent-2: #9e5a6e;
-  --accent-ink: #0b090a;
+  --bg: #06090e;
+  --bg-2: #0a0f17;
+  --panel: #0e1520;
+  --panel-2: #142030;
+  --line: #1d3048;
+  --text: #d7e6f5;
+  --muted: #7890a8;
+  --accent: #4aa8ff;
+  --accent-2: #7b8cff;
+  --accent-ink: #04101c;
   --ok: #7fb58a;
   --warn: #d6a24a;
   --err: #ff5c6c;
@@ -249,7 +249,7 @@ main::-webkit-scrollbar-thumb, .pl-list::-webkit-scrollbar-thumb { background: v
 @font-face { font-family: "Lain Mono"; font-weight: 600 900; src: local("Cascadia Mono Bold"), local("CascadiaMono-Bold"), local("Consolas Bold");
   unicode-range: U+0000-024F, U+2000-206F, U+20A0-20CF, U+2100-23FF; }
 [data-theme="lain"] body { font-family: "Lain Mono", "IBM Plex Sans Arabic", monospace; }
-[data-theme="lain"] main { background: radial-gradient(1100px 420px at 50% -8%, rgba(217, 70, 95, .09), transparent 70%), var(--bg); }
+[data-theme="lain"] main { background: radial-gradient(1100px 420px at 50% -8%, rgba(74, 168, 255, .09), transparent 70%), var(--bg); }
 
 /* CRT scanlines + vignette over the whole window (never blocks clicks) */
 [data-theme="lain"] body::before,
@@ -261,16 +261,16 @@ main::-webkit-scrollbar-thumb, .pl-list::-webkit-scrollbar-thumb { background: v
 [data-theme="lain"] :is(.card, .job, .urlbar, .group, .stat, .banner, .clipbar, .thumb, .seg, .seg button, .primary, .ghost, .icon-btn,
   select, .search, .time-in, textarea, .field input, .nav, .pl-list, .engine-pill, .toast, .tag, .badge, .job .jt, .pl-item img, .drop) { border-radius: 2px; }
 
-[data-theme="lain"] .primary { background: var(--accent); color: var(--accent-ink); box-shadow: 0 0 14px rgba(217, 70, 95, .35); }
-[data-theme="lain"] .primary:hover { filter: brightness(1.12); box-shadow: 0 0 20px rgba(217, 70, 95, .55); }
-[data-theme="lain"] .urlbar:focus-within { box-shadow: 0 0 0 1px var(--accent), 0 0 22px rgba(217, 70, 95, .22); }
+[data-theme="lain"] .primary { background: var(--accent); color: var(--accent-ink); box-shadow: 0 0 14px rgba(74, 168, 255, .35); }
+[data-theme="lain"] .primary:hover { filter: brightness(1.12); box-shadow: 0 0 20px rgba(74, 168, 255, .55); }
+[data-theme="lain"] .urlbar:focus-within { box-shadow: 0 0 0 1px var(--accent), 0 0 22px rgba(74, 168, 255, .22); }
 [data-theme="lain"] .progress > div { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
 [data-theme="lain"] .progress.done > div { background: var(--ok); box-shadow: none; }
-[data-theme="lain"] .logo { filter: hue-rotate(150deg) saturate(.85); }
+[data-theme="lain"] .logo { filter: drop-shadow(0 0 6px rgba(74, 168, 255, .55)); }
 [data-theme="lain"] :is(.thumb img, .pl-item img) , [data-theme="lain"] .job .jt { filter: saturate(.7) contrast(1.06); }
 
 /* glitchy title with a blinking cursor */
-[data-theme="lain"] .hero h1 { text-shadow: -1.5px 0 rgba(255, 60, 90, .65), 1.5px 0 rgba(90, 220, 255, .3); animation: lain-glitch 7s infinite steps(1); }
+[data-theme="lain"] .hero h1 { text-shadow: -1.5px 0 rgba(74, 168, 255, .75), 1.5px 0 rgba(255, 90, 170, .28); animation: lain-glitch 7s infinite steps(1); }
 [data-theme="lain"] .hero h1::after { content: "_"; color: var(--accent); margin-inline-start: 4px; animation: lain-blink 1.05s steps(1) infinite; }
 [data-theme="lain"] .section-head h2::before { content: "// "; color: var(--accent); }
 [data-theme="lain"] .brand::after { content: "// wired"; color: var(--muted); font-weight: 400; font-size: 12px; margin-left: 2px; }
@@ -280,7 +280,7 @@ main::-webkit-scrollbar-thumb, .pl-list::-webkit-scrollbar-thumb { background: v
 @keyframes lain-roll { to { background-position: 0 30px; } }
 @keyframes lain-glitch {
   0%, 89%, 100% { transform: none; }
-  90% { transform: translate(-2px, 1px) skewX(-4deg); text-shadow: -3px 0 rgba(255, 60, 90, .9), 3px 0 rgba(90, 220, 255, .5); }
+  90% { transform: translate(-2px, 1px) skewX(-4deg); text-shadow: -3px 0 rgba(74, 168, 255, .95), 3px 0 rgba(255, 90, 170, .5); }
   91% { transform: translate(2px, -1px); }
   92% { transform: none; }
   95% { transform: translateX(1px); clip-path: inset(30% 0 40% 0); }
@@ -289,3 +289,15 @@ main::-webkit-scrollbar-thumb, .pl-list::-webkit-scrollbar-thumb { background: v
 @media (prefers-reduced-motion: reduce) {
   [data-theme="lain"] body::after, [data-theme="lain"] .hero h1, [data-theme="lain"] .hero h1::after { animation: none; }
 }
+
+/* ===================== custom background image ===================== */
+html main.has-bg {
+  background:
+    linear-gradient(color-mix(in srgb, var(--bg) var(--bg-dim, 75%), transparent), color-mix(in srgb, var(--bg) var(--bg-dim, 75%), transparent)),
+    var(--bg-img) center / cover no-repeat,
+    var(--bg);
+}
+/* in Lain the picture is turned into a blue monochrome */
+html[data-theme="lain"] main.has-bg { background-blend-mode: normal, luminosity, normal; }
+main.has-bg :is(.card, .job, .group, .stat, .urlbar, .clipbar) { background-color: color-mix(in srgb, var(--panel) 80%, transparent); backdrop-filter: blur(8px); }
+.range { width: 200px; accent-color: var(--accent); }

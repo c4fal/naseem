@@ -35,6 +35,8 @@ const DEFAULTS = {
   autoFetchOnPaste: true,
   lang: 'ar',
   theme: 'dark',
+  bgImage: '',
+  bgVisibility: 25,
 };
 
 const readJSON = (f, d) => { try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch { return d; } };
@@ -336,6 +338,35 @@ ipcMain.handle('dialog:pickDir', async () => {
 ipcMain.handle('clipboard:read', () => clipboard.readText());
 ipcMain.handle('clipboard:write', (_e, t) => clipboard.writeText(String(t)));
 
+// ---------- custom background image (a copy is kept in the app's data folder, never uploaded) ----------
+const BG_TYPES = { '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.gif': 'image/gif' };
+function bgDataUrl() {
+  if (!settings.bgImage) return null;
+  const p = path.join(DATA, settings.bgImage);
+  try { return `data:${BG_TYPES[path.extname(p).toLowerCase()]};base64,${fs.readFileSync(p).toString('base64')}`; } catch { return null; }
+}
+function removeBgFiles() { for (const f of fs.readdirSync(DATA)) if (/^background.[a-z]+$/i.test(f)) fs.rmSync(path.join(DATA, f), { force: true }); }
+ipcMain.handle('bg:get', () => bgDataUrl());
+ipcMain.handle('bg:pick', async () => {
+  const r = await dialog.showOpenDialog(win, { properties: ['openFile'], filters: [{ name: 'Images', extensions: ['png', 'jpg', 'jpeg', 'webp', 'gif'] }] });
+  if (r.canceled || !r.filePaths[0]) return { ok: false };
+  const src = r.filePaths[0];
+  const ext = path.extname(src).toLowerCase();
+  if (!BG_TYPES[ext]) return { ok: false, error: 'TYPE' };
+  if (fs.statSync(src).size > 20 * 1024 * 1024) return { ok: false, error: 'TOO_BIG' };
+  removeBgFiles();
+  fs.copyFileSync(src, path.join(DATA, 'background' + ext));
+  settings = { ...settings, bgImage: 'background' + ext };
+  writeJSON(SETTINGS_FILE, settings);
+  return { ok: true, url: bgDataUrl(), settings };
+});
+ipcMain.handle('bg:clear', () => {
+  removeBgFiles();
+  settings = { ...settings, bgImage: '' };
+  writeJSON(SETTINGS_FILE, settings);
+  return settings;
+});
+
 // ---------- engine install / update ----------
 function httpDownload(url, dest, onProgress) {
   return new Promise((resolve, reject) => {
@@ -428,7 +459,7 @@ function startClipboardWatch() {
 
 // ---------- window ----------
 function themeColors() {
-  if (settings.theme === 'lain') return { color: '#0b090a', symbolColor: '#e4d9dc' };
+  if (settings.theme === 'lain') return { color: '#06090e', symbolColor: '#d7e6f5' };
   const dark = settings.theme === 'dark' || (settings.theme === 'system' && nativeTheme.shouldUseDarkColors);
   return dark ? { color: '#0d1117', symbolColor: '#c9d1d9' } : { color: '#f4f6fa', symbolColor: '#1f2633' };
 }
