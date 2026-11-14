@@ -357,3 +357,10 @@ main:is(.has-bg, .has-art) :is(.card, .job, .group, .stat, .urlbar, .clipbar) { 
 }
 [data-motion="off"][data-theme="lain"] :is(.bg-img, .bg-roll, .side-art, .side-art img), [data-motion="off"][data-theme="lain"] .bg-art::before { animation: none; }
 [data-motion="off"][data-theme="lain"] .bg-roll { display: none; }
+
+/* sign-in hint under YouTube "confirm you're not a bot" errors */
+.signin-hint { display: flex; align-items: center; gap: 10px; margin-top: 8px; font-size: 12.5px; color: var(--warn); flex-wrap: wrap; }
+.err-card .signin-hint { margin-top: 10px; }
+/* error text is usually English: lay it out by its own direction, even in the Arabic UI */
+.job .errmsg, .err-card div > div { unicode-bidi: plaintext; }
+[dir="rtl"] .job .errmsg, [dir="rtl"] .err-card div > div { text-align: right; }
