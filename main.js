@@ -385,6 +385,7 @@ ipcMain.handle('download:clearFinished', () => {
 });
 ipcMain.handle('download:list', () => [...jobs.values()].map(publicJob));
 ipcMain.handle('download:pauseAll', () => { for (const j of jobs.values()) if (ACTIVE.has(j.status) || j.status === 'queued') stopJob(j, 'paused'); });
+ipcMain.handle('download:retryAll', () => { for (const j of jobs.values()) if (j.status === 'error' || j.status === 'canceled') update(j, { status: 'queued', error: null }, true); pump(); });
 ipcMain.handle('download:resumeAll', () => { for (const j of jobs.values()) if (j.status === 'paused') update(j, { status: 'queued' }, true); pump(); });
 
 // ---------- history ----------

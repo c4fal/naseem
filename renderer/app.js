@@ -8,7 +8,7 @@ const I18N = {
     heroTitle: 'نزّل أي فيديو أو صوت', heroSub: 'يوتيوب، تيك توك، إكس، إنستغرام، فيسبوك وأكثر من ألف موقع',
     urlPh: 'الصق الرابط هنا… (Ctrl+V)', paste: 'لصق', fetch: 'جلب', batchMode: 'تنزيل عدة روابط دفعة واحدة', batchPh: 'رابط في كل سطر…', addAll: 'إضافة الكل',
     video: 'فيديو', audio: 'صوت', quality: 'الجودة', format: 'الصيغة', best: 'أفضل جودة', download: 'تنزيل', subs: 'الترجمة', trim: 'قص مقطع', from: 'من', to: 'إلى',
-    clipDetected: 'رابط جديد في الحافظة:', dismiss: 'تجاهل', downloads: 'التنزيلات', pauseAll: 'إيقاف الكل', resumeAll: 'استئناف الكل', clearFinished: 'مسح المنتهية',
+    clipDetected: 'رابط جديد في الحافظة:', dismiss: 'تجاهل', downloads: 'التنزيلات', pauseAll: 'إيقاف الكل', retryAll: 'إعادة محاولة الكل', resumeAll: 'استئناف الكل', clearFinished: 'مسح المنتهية',
     queueEmpty: 'لا توجد تنزيلات بعد. الصق رابطًا للبدء.', dropHere: 'أفلت الرابط هنا',
     engineMissingTitle: 'محرك التنزيل غير مثبت', engineMissingBody: 'يحتاج البرنامج إلى yt-dlp و FFmpeg (مفتوحَي المصدر). سيتم تنزيلهما من GitHub مرة واحدة (~100 ميغابايت).', installEngine: 'تثبيت المحرك',
     st_queued: 'في الانتظار', st_starting: 'جارٍ البدء…', st_downloading: 'جارٍ التنزيل', st_processing: 'جارٍ المعالجة والدمج…', st_done: 'اكتمل', st_error: 'فشل', st_canceled: 'أُلغي', st_paused: 'متوقف مؤقتًا',
@@ -36,7 +36,7 @@ const I18N = {
     heroTitle: 'Download any video or audio', heroSub: 'YouTube, TikTok, X, Instagram, Facebook and 1000+ sites',
     urlPh: 'Paste a link here… (Ctrl+V)', paste: 'Paste', fetch: 'Fetch', batchMode: 'Download many links at once', batchPh: 'One link per line…', addAll: 'Add all',
     video: 'Video', audio: 'Audio', quality: 'Quality', format: 'Format', best: 'Best', download: 'Download', subs: 'Subtitles', trim: 'Trim clip', from: 'From', to: 'To',
-    clipDetected: 'New link in clipboard:', dismiss: 'Dismiss', downloads: 'Downloads', pauseAll: 'Pause all', resumeAll: 'Resume all', clearFinished: 'Clear finished',
+    clipDetected: 'New link in clipboard:', dismiss: 'Dismiss', downloads: 'Downloads', pauseAll: 'Pause all', retryAll: 'Retry all', resumeAll: 'Resume all', clearFinished: 'Clear finished',
     queueEmpty: 'No downloads yet. Paste a link to start.', dropHere: 'Drop the link here',
     engineMissingTitle: 'Download engine not installed', engineMissingBody: 'Naseem needs yt-dlp and FFmpeg (open source). They will be downloaded once from GitHub (~100 MB).', installEngine: 'Install engine',
     st_queued: 'Queued', st_starting: 'Starting…', st_downloading: 'Downloading', st_processing: 'Processing & merging…', st_done: 'Completed', st_error: 'Failed', st_canceled: 'Canceled', st_paused: 'Paused',
@@ -399,6 +399,9 @@ function renderQueueMeta() {
   const n = [...S.jobs.values()].filter((j) => ['queued', 'starting', 'downloading', 'processing'].includes(j.status)).length;
   const b = $('#activeBadge'); b.hidden = !n; b.textContent = n;
   $('#queueEmpty').hidden = S.jobs.size > 0;
+  const failed = [...S.jobs.values()].filter((j) => j.status === 'error' || j.status === 'canceled').length;
+  $('#retryAllBtn').hidden = !failed;
+  $('#retryCount').textContent = failed ? `(${failed})` : '';
 }
 
 api.download.onUpdate((j) => {
@@ -574,6 +577,7 @@ function bind() {
   $('#clearBtn').addEventListener('click', () => api.download.clearFinished());
   $('#pauseAllBtn').addEventListener('click', () => api.download.pauseAll());
   $('#resumeAllBtn').addEventListener('click', () => api.download.resumeAll());
+  $('#retryAllBtn').addEventListener('click', () => api.download.retryAll());
 
   // history
   $('#historySearch').addEventListener('input', renderHistory);

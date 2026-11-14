@@ -12,6 +12,7 @@ contextBridge.exposeInMainWorld('api', {
     clearFinished: () => inv('download:clearFinished'),
     pauseAll: () => inv('download:pauseAll'),
     resumeAll: () => inv('download:resumeAll'),
+    retryAll: () => inv('download:retryAll'),
     onUpdate: on('download:update'),
     onRemoved: on('download:removed'),
   },
