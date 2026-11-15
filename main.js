@@ -95,7 +95,21 @@ async function prepareCookies(tag) {
 }
 const dropCookies = (p) => { if (p) fs.rm(p, { force: true }, () => {}); };
 const firefoxInstalled = () => fs.existsSync(path.join(app.getPath('appData'), 'Mozilla', 'Firefox', 'Profiles'));
-ipcMain.handle('cookies:status', () => ({ firefox: firefoxInstalled() }));
+function firefoxExe() {
+  const dirs = [process.env.ProgramFiles, process.env['ProgramFiles(x86)'], process.env.LOCALAPPDATA].filter(Boolean);
+  return dirs.map((d) => path.join(d, 'Mozilla Firefox', 'firefox.exe')).find((p) => fs.existsSync(p)) || null;
+}
+ipcMain.handle('cookies:status', () => ({ firefox: firefoxInstalled() || !!firefoxExe() }));
+// Opens Google's YouTube sign-in page in the user's real Firefox, and makes Naseem read Firefox's cookies.
+ipcMain.handle('cookies:firefoxSignIn', () => {
+  const exe = firefoxExe();
+  if (!exe) return { ok: false, error: 'NO_FIREFOX' };
+  const url = 'https://accounts.google.com/ServiceLogin?service=youtube&continue=' + encodeURIComponent('https://www.youtube.com/');
+  spawn(exe, [url], { detached: true, stdio: 'ignore' }).unref();
+  settings = { ...settings, cookiesBrowser: 'firefox' };
+  writeJSON(SETTINGS_FILE, settings);
+  return { ok: true, settings };
+});
 ipcMain.handle('cookies:import', async () => {
   const r = await dialog.showOpenDialog(win, { properties: ['openFile'], filters: [{ name: 'cookies.txt', extensions: ['txt'] }] });
   if (r.canceled || !r.filePaths[0]) return { ok: false };

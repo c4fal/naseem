@@ -22,7 +22,7 @@ const I18N = {
     s_template: 'قالب اسم الملف', s_templateHint: 'بصيغة قوالب yt-dlp', s_mode: 'الوضع الافتراضي', s_quality: 'الجودة الافتراضية',
     s_container: 'حاوية الفيديو', s_h264: 'تفضيل H.264', s_h264Hint: 'أكثر توافقًا مع الهواتف والمشغلات', s_subs: 'تضمين الترجمة افتراضيًا', s_subLangs: 'لغات الترجمة', s_subLangsHint: 'مثل ar,en',
     s_sponsor: 'حذف المقاطع الإعلانية (SponsorBlock)', s_sponsorHint: 'يحذف الرعاية والترويج من فيديوهات يوتيوب', s_audioFmt: 'صيغة الصوت', s_thumb: 'تضمين الصورة المصغرة', s_thumbHint: 'كغلاف للملف',
-    useFirefox: 'استخدام تسجيل دخول Firefox', ffNowOn: 'سيستخدم نسيم تسجيل دخولك في Firefox. جارٍ إعادة المحاولة…', ffAlready: 'نسيم يستخدم كوكيز Firefox. تأكد أنك مسجّل الدخول إلى يوتيوب في Firefox ثم أعد المحاولة.',
+    useFirefox: 'استخدام تسجيل دخول Firefox', s_ytSignIn: 'تسجيل الدخول إلى يوتيوب', s_ytSignInHint: 'يفتح صفحة الدخول في Firefox، ثم يستخدم نسيم ذلك الدخول', ffSignInBtn: 'تسجيل الدخول عبر Firefox', ffInUse: 'يستخدم Firefox', ffOpened: 'تم فتح Firefox. سجّل الدخول هناك ثم عُد إلى نسيم.', noFirefox: 'Firefox غير مثبت. استخدم ملف الكوكيز بدلًا منه.', ffNowOn: 'سيستخدم نسيم تسجيل دخولك في Firefox. جارٍ إعادة المحاولة…', ffAlready: 'نسيم يستخدم كوكيز Firefox. تأكد أنك مسجّل الدخول إلى يوتيوب في Firefox ثم أعد المحاولة.',
     s_cookiesFile: 'ملف الكوكيز (cookies.txt)', s_cookiesFileHint: 'بديل: صدّر كوكيز يوتيوب من متصفحك واختر الملف', cookiesLoaded: 'محمّل', cookiesImport: 'اختيار ملف', badCookies: 'الملف ليس بصيغة cookies.txt',
     botHint: 'يوتيوب يطلب التحقق من أنك لست روبوتًا. سجّل الدخول إلى يوتيوب في Firefox ثم اضغط الزر.', botHintNoFf: 'يوتيوب يطلب التحقق من أنك لست روبوتًا. صدّر كوكيز يوتيوب من متصفحك كملف cookies.txt واختره.',
     s_cookies: 'استخدام كوكيز المتصفح', s_cookiesHint: 'لتحقق يوتيوب والمحتوى المقيد. Firefox هو الأفضل على ويندوز', none: 'بدون', s_proxy: 'بروكسي', s_proxyHint: 'مثل socks5://127.0.0.1:1080', s_rate: 'حد السرعة', s_rateHint: 'مثل 2M أو 500K (فارغ = بلا حد)',
@@ -50,7 +50,7 @@ const I18N = {
     s_template: 'Filename template', s_templateHint: 'yt-dlp syntax, e.g. %(title)s.%(ext)s', s_mode: 'Default mode', s_quality: 'Default quality',
     s_container: 'Video container', s_h264: 'Prefer H.264', s_h264Hint: 'Best compatibility with phones and players', s_subs: 'Embed subtitles by default', s_subLangs: 'Subtitle languages', s_subLangsHint: 'e.g. ar,en',
     s_sponsor: 'Remove sponsor segments (SponsorBlock)', s_sponsorHint: 'Cuts sponsors and self-promo from YouTube videos', s_audioFmt: 'Audio format', s_thumb: 'Embed thumbnail', s_thumbHint: 'As cover art',
-    useFirefox: 'Use Firefox sign-in', ffNowOn: 'Naseem will use your Firefox sign-in. Retrying…', ffAlready: 'Naseem already uses Firefox cookies. Make sure you are signed in to YouTube in Firefox, then retry.',
+    useFirefox: 'Use Firefox sign-in', s_ytSignIn: 'YouTube sign-in', s_ytSignInHint: 'Opens the sign-in page in Firefox; Naseem then uses that sign-in', ffSignInBtn: 'Sign in with Firefox', ffInUse: 'Using Firefox', ffOpened: 'Firefox is open. Sign in there, then come back to Naseem.', noFirefox: 'Firefox is not installed. Use a cookies file instead.', ffNowOn: 'Naseem will use your Firefox sign-in. Retrying…', ffAlready: 'Naseem already uses Firefox cookies. Make sure you are signed in to YouTube in Firefox, then retry.',
     s_cookiesFile: 'Cookies file (cookies.txt)', s_cookiesFileHint: 'Alternative: export your YouTube cookies from your browser and pick the file', cookiesLoaded: 'Loaded', cookiesImport: 'Choose file', badCookies: 'That file is not in cookies.txt format',
     botHint: 'YouTube wants to check you are not a bot. Sign in to YouTube in Firefox, then press the button.', botHintNoFf: 'YouTube wants to check you are not a bot. Export your YouTube cookies from your browser as cookies.txt and choose the file.',
     s_cookies: 'Use browser cookies', s_cookiesHint: 'For YouTube checks and restricted content. Firefox works best on Windows', none: 'None', s_proxy: 'Proxy', s_proxyHint: 'e.g. socks5://127.0.0.1:1080', s_rate: 'Speed limit', s_rateHint: 'e.g. 2M or 500K (empty = unlimited)',
@@ -202,7 +202,9 @@ function renderEnginePill() {
 }
 async function refreshEngine() {
   S.engine = await api.engine.status();
-  return renderEnginePill();
+  const ok = renderEnginePill();
+  if (!$('#view-settings').hidden) renderSettings(); // settings may have opened before the check finished
+  return ok;
 }
 
 async function installEngine(which = 'all') {
@@ -478,6 +480,15 @@ function signInHint() {
         } }, t('useFirefox'))
       : h('button', { class: 'primary small', onclick: importCookies }, t('cookiesImport')));
 }
+function ytSignInControl() {
+  if (!S.cookieInfo.firefox) return h('span', { class: 'muted' }, t('noFirefox'));
+  return h('div', { class: 'opt-row' },
+    S.settings.cookiesBrowser === 'firefox' ? h('span', { class: 'st-done' }, t('ffInUse')) : null,
+    h('button', { class: 'primary small', onclick: async () => {
+      const r = await api.cookies.firefoxSignIn();
+      if (r.ok) { S.settings = r.settings; toast(t('ffOpened'), 'ok'); renderSettings(); } else toast(t('noFirefox'), 'err');
+    } }, t('ffSignInBtn')));
+}
 function cookiesFileControl() {
   const has = !!S.settings.cookiesFile;
   return h('div', { class: 'opt-row' },
@@ -531,6 +542,7 @@ function renderSettings() {
       field(t('s_audioFmt'), null, selectOf('audioFormat', AUDIO_FORMATS.map((f) => [f, f.toUpperCase()]))),
       field(t('s_thumb'), t('s_thumbHint'), sw('embedThumbnail'))),
     h('div', { class: 'group' }, h('h4', {}, t('g_network')),
+      field(t('s_ytSignIn'), t('s_ytSignInHint'), ytSignInControl()),
       field(t('s_cookiesFile'), t('s_cookiesFileHint'), cookiesFileControl()),
       field(t('s_cookies'), t('s_cookiesHint'), selectOf('cookiesBrowser', [['', t('none')], ['chrome', 'Chrome'], ['edge', 'Edge'], ['firefox', 'Firefox'], ['brave', 'Brave'], ['opera', 'Opera'], ['vivaldi', 'Vivaldi']])),
       field(t('s_proxy'), t('s_proxyHint'), textOf('proxy', 'socks5://127.0.0.1:1080')),
