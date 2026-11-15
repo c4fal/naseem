@@ -22,10 +22,10 @@ const I18N = {
     s_template: 'قالب اسم الملف', s_templateHint: 'بصيغة قوالب yt-dlp', s_mode: 'الوضع الافتراضي', s_quality: 'الجودة الافتراضية',
     s_container: 'حاوية الفيديو', s_h264: 'تفضيل H.264', s_h264Hint: 'أكثر توافقًا مع الهواتف والمشغلات', s_subs: 'تضمين الترجمة افتراضيًا', s_subLangs: 'لغات الترجمة', s_subLangsHint: 'مثل ar,en',
     s_sponsor: 'حذف المقاطع الإعلانية (SponsorBlock)', s_sponsorHint: 'يحذف الرعاية والترويج من فيديوهات يوتيوب', s_audioFmt: 'صيغة الصوت', s_thumb: 'تضمين الصورة المصغرة', s_thumbHint: 'كغلاف للملف',
-    s_yt: 'حساب يوتيوب', s_ytHint: 'سجّل الدخول داخل البرنامج ليتوقف يوتيوب عن طلب التحقق', ytSignIn: 'تسجيل الدخول', ytSignOut: 'تسجيل الخروج', ytSignedIn: 'متصل', ytSignedOut: 'غير متصل', ytNowSignedIn: 'تم تسجيل الدخول إلى يوتيوب',
+    useFirefox: 'استخدام تسجيل دخول Firefox', ffNowOn: 'سيستخدم نسيم تسجيل دخولك في Firefox. جارٍ إعادة المحاولة…', ffAlready: 'نسيم يستخدم كوكيز Firefox. تأكد أنك مسجّل الدخول إلى يوتيوب في Firefox ثم أعد المحاولة.',
     s_cookiesFile: 'ملف الكوكيز (cookies.txt)', s_cookiesFileHint: 'بديل: صدّر كوكيز يوتيوب من متصفحك واختر الملف', cookiesLoaded: 'محمّل', cookiesImport: 'اختيار ملف', badCookies: 'الملف ليس بصيغة cookies.txt',
-    botHint: 'يوتيوب يطلب التحقق من أنك لست روبوتًا. سجّل الدخول ثم أعد المحاولة.',
-    s_cookies: 'استخدام كوكيز المتصفح', s_cookiesHint: 'للمحتوى الخاص أو المقيد بالعمر', none: 'بدون', s_proxy: 'بروكسي', s_proxyHint: 'مثل socks5://127.0.0.1:1080', s_rate: 'حد السرعة', s_rateHint: 'مثل 2M أو 500K (فارغ = بلا حد)',
+    botHint: 'يوتيوب يطلب التحقق من أنك لست روبوتًا. سجّل الدخول إلى يوتيوب في Firefox ثم اضغط الزر.', botHintNoFf: 'يوتيوب يطلب التحقق من أنك لست روبوتًا. صدّر كوكيز يوتيوب من متصفحك كملف cookies.txt واختره.',
+    s_cookies: 'استخدام كوكيز المتصفح', s_cookiesHint: 'لتحقق يوتيوب والمحتوى المقيد. Firefox هو الأفضل على ويندوز', none: 'بدون', s_proxy: 'بروكسي', s_proxyHint: 'مثل socks5://127.0.0.1:1080', s_rate: 'حد السرعة', s_rateHint: 'مثل 2M أو 500K (فارغ = بلا حد)',
     s_clip: 'مراقبة الحافظة', s_clipHint: 'اقتراح الروابط المنسوخة تلقائيًا', s_autofetch: 'جلب تلقائي عند اللصق', s_notify: 'إشعار عند اكتمال التنزيل', s_lang: 'اللغة', s_theme: 'المظهر', dark: 'داكن', light: 'فاتح', system: 'حسب النظام', lain: 'لين (Lain)', s_bg: 'صورة الخلفية', s_bgHint: 'صورة من جهازك تظهر خلف البرنامج', s_bgPick: 'اختيار صورة', s_bgClear: 'إزالة', s_bgVis: 'وضوح الصورة', bgTooBig: 'الصورة أكبر من 20 ميغابايت', s_art: 'صورة جانبية', s_artHint: 'صورة أو GIF في زاوية البرنامج (الأجمل بخلفية شفافة)', s_artVis: 'وضوح الصورة الجانبية', s_motion: 'الحركة', s_motionHint: 'تأثيرات مظهر Lain المتحركة', motionOn: 'تشغيل', motionAuto: 'حسب إعدادات ويندوز', motionOff: 'إيقاف',
     e_ytdlp: 'yt-dlp', e_ffmpeg: 'FFmpeg', e_update: 'تحديث المحرك', e_reinstall: 'إعادة التثبيت', notInstalled: 'غير مثبت', updating: 'جارٍ التحديث…', installing: 'جارٍ التثبيت…', e_done: 'تم بنجاح',
     eng_ytdlp: 'تنزيل yt-dlp', eng_ffmpeg: 'تنزيل FFmpeg', eng_extract: 'فك الضغط…', engineReady: 'المحرك جاهز', engineMissing: 'المحرك غير مثبت',
@@ -50,10 +50,10 @@ const I18N = {
     s_template: 'Filename template', s_templateHint: 'yt-dlp syntax, e.g. %(title)s.%(ext)s', s_mode: 'Default mode', s_quality: 'Default quality',
     s_container: 'Video container', s_h264: 'Prefer H.264', s_h264Hint: 'Best compatibility with phones and players', s_subs: 'Embed subtitles by default', s_subLangs: 'Subtitle languages', s_subLangsHint: 'e.g. ar,en',
     s_sponsor: 'Remove sponsor segments (SponsorBlock)', s_sponsorHint: 'Cuts sponsors and self-promo from YouTube videos', s_audioFmt: 'Audio format', s_thumb: 'Embed thumbnail', s_thumbHint: 'As cover art',
-    s_yt: 'YouTube account', s_ytHint: 'Sign in inside the app so YouTube stops asking you to verify', ytSignIn: 'Sign in', ytSignOut: 'Sign out', ytSignedIn: 'Signed in', ytSignedOut: 'Not signed in', ytNowSignedIn: 'Signed in to YouTube',
+    useFirefox: 'Use Firefox sign-in', ffNowOn: 'Naseem will use your Firefox sign-in. Retrying…', ffAlready: 'Naseem already uses Firefox cookies. Make sure you are signed in to YouTube in Firefox, then retry.',
     s_cookiesFile: 'Cookies file (cookies.txt)', s_cookiesFileHint: 'Alternative: export your YouTube cookies from your browser and pick the file', cookiesLoaded: 'Loaded', cookiesImport: 'Choose file', badCookies: 'That file is not in cookies.txt format',
-    botHint: 'YouTube wants to check you are not a bot. Sign in, then retry.',
-    s_cookies: 'Use browser cookies', s_cookiesHint: 'For private or age-restricted content', none: 'None', s_proxy: 'Proxy', s_proxyHint: 'e.g. socks5://127.0.0.1:1080', s_rate: 'Speed limit', s_rateHint: 'e.g. 2M or 500K (empty = unlimited)',
+    botHint: 'YouTube wants to check you are not a bot. Sign in to YouTube in Firefox, then press the button.', botHintNoFf: 'YouTube wants to check you are not a bot. Export your YouTube cookies from your browser as cookies.txt and choose the file.',
+    s_cookies: 'Use browser cookies', s_cookiesHint: 'For YouTube checks and restricted content. Firefox works best on Windows', none: 'None', s_proxy: 'Proxy', s_proxyHint: 'e.g. socks5://127.0.0.1:1080', s_rate: 'Speed limit', s_rateHint: 'e.g. 2M or 500K (empty = unlimited)',
     s_clip: 'Watch clipboard', s_clipHint: 'Suggest copied links automatically', s_autofetch: 'Auto-fetch on paste', s_notify: 'Notify when a download finishes', s_lang: 'Language', s_theme: 'Theme', dark: 'Dark', light: 'Light', system: 'System', lain: 'Lain', s_bg: 'Background image', s_bgHint: 'A picture from your computer shown behind the app', s_bgPick: 'Choose image', s_bgClear: 'Remove', s_bgVis: 'Image visibility', bgTooBig: 'Image is larger than 20 MB', s_art: 'Side image', s_artHint: 'A picture or GIF in the corner of the app (transparent ones look best)', s_artVis: 'Side image visibility', s_motion: 'Animations', s_motionHint: 'Moving effects of the Lain theme', motionOn: 'On', motionAuto: 'Follow Windows', motionOff: 'Off',
     e_ytdlp: 'yt-dlp', e_ffmpeg: 'FFmpeg', e_update: 'Update engine', e_reinstall: 'Reinstall', notInstalled: 'Not installed', updating: 'Updating…', installing: 'Installing…', e_done: 'Done',
     eng_ytdlp: 'Downloading yt-dlp', eng_ffmpeg: 'Downloading FFmpeg', eng_extract: 'Extracting…', engineReady: 'Engine ready', engineMissing: 'Engine missing',
@@ -85,7 +85,7 @@ const ICONS = {
 // ---------------- helpers ----------------
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
-const S = { yt: { signedIn: false }, settings: null, jobs: new Map(), history: [], info: null, engine: null, batchMode: 'video' };
+const S = { cookieInfo: { firefox: false }, settings: null, jobs: new Map(), history: [], info: null, engine: null, batchMode: 'video' };
 const t = (k, vars) => { let s = (I18N[S.settings?.lang || 'ar'] || I18N.ar)[k] ?? I18N.en[k] ?? k; if (vars) for (const [a, b] of Object.entries(vars)) s = s.replace(`{${a}}`, b); return s; };
 
 function icon(name, cls = 'ic') { const s = document.createElement('span'); s.className = cls; s.innerHTML = `<svg viewBox="0 0 24 24">${ICONS[name] || ''}</svg>`; return s; }
@@ -460,26 +460,29 @@ function selectOf(key, options) { const s = h('select', {}, options.map(([v, l])
 function textOf(key, ph) { const i = h('input', { type: 'text', value: S.settings[key] || '', placeholder: ph || '' }); i.addEventListener('change', () => saveSetting({ [key]: i.value.trim() })); return i; }
 
 const isSignInError = (e) => /Sign in to confirm|not a bot/i.test(e || '');
-function signInHint() {
-  return h('div', { class: 'signin-hint' }, h('span', {}, t('botHint')),
-    h('button', { class: 'primary small', onclick: () => api.yt.login() }, t('ytSignIn')));
+async function importCookies() {
+  const r = await api.cookies.import();
+  if (r.ok) { S.settings = r.settings; if (!$('#view-settings').hidden) renderSettings(); api.download.retryAll(); }
+  else if (r.error === 'BAD_COOKIES') toast(t('badCookies'), 'err');
 }
-function ytControl() {
-  const st = S.yt || {};
-  return h('div', { class: 'opt-row' },
-    h('span', { class: st.signedIn ? 'st-done' : 'muted' }, st.signedIn ? t('ytSignedIn') : t('ytSignedOut')),
-    st.signedIn
-      ? h('button', { class: 'ghost small danger', onclick: async () => { S.yt = await api.yt.logout(); renderSettings(); } }, t('ytSignOut'))
-      : h('button', { class: 'primary small', onclick: () => api.yt.login() }, t('ytSignIn')));
+function signInHint() {
+  if (S.settings.cookiesBrowser === 'firefox') return h('div', { class: 'signin-hint' }, h('span', {}, t('ffAlready')));
+  const ff = S.cookieInfo.firefox;
+  return h('div', { class: 'signin-hint' }, h('span', {}, ff ? t('botHint') : t('botHintNoFf')),
+    ff
+      ? h('button', { class: 'primary small', onclick: async () => {
+          await saveSetting({ cookiesBrowser: 'firefox' });
+          toast(t('ffNowOn'), 'ok');
+          api.download.retryAll();
+          if ($('#preview .err-card')) fetchUrl($('#urlInput').value);
+        } }, t('useFirefox'))
+      : h('button', { class: 'primary small', onclick: importCookies }, t('cookiesImport')));
 }
 function cookiesFileControl() {
   const has = !!S.settings.cookiesFile;
   return h('div', { class: 'opt-row' },
     has ? h('span', { class: 'st-done' }, t('cookiesLoaded')) : null,
-    h('button', { class: 'ghost small', onclick: async () => {
-      const r = await api.cookies.import();
-      if (r.ok) { S.settings = r.settings; renderSettings(); } else if (r.error === 'BAD_COOKIES') toast(t('badCookies'), 'err');
-    } }, t('cookiesImport')),
+    h('button', { class: 'ghost small', onclick: importCookies }, t('cookiesImport')),
     has ? h('button', { class: 'ghost small danger', onclick: async () => { S.settings = await api.cookies.clear(); renderSettings(); } }, t('s_bgClear')) : null);
 }
 function renderSettings() {
@@ -528,7 +531,6 @@ function renderSettings() {
       field(t('s_audioFmt'), null, selectOf('audioFormat', AUDIO_FORMATS.map((f) => [f, f.toUpperCase()]))),
       field(t('s_thumb'), t('s_thumbHint'), sw('embedThumbnail'))),
     h('div', { class: 'group' }, h('h4', {}, t('g_network')),
-      field(t('s_yt'), t('s_ytHint'), ytControl()),
       field(t('s_cookiesFile'), t('s_cookiesFileHint'), cookiesFileControl()),
       field(t('s_cookies'), t('s_cookiesHint'), selectOf('cookiesBrowser', [['', t('none')], ['chrome', 'Chrome'], ['edge', 'Edge'], ['firefox', 'Firefox'], ['brave', 'Brave'], ['opera', 'Opera'], ['vivaldi', 'Vivaldi']])),
       field(t('s_proxy'), t('s_proxyHint'), textOf('proxy', 'socks5://127.0.0.1:1080')),
@@ -586,13 +588,7 @@ function bind() {
 
   // clipboard
   let clipUrl = null;
-  api.yt.onStatus((st) => {
-    const was = S.yt.signedIn;
-    S.yt = st;
-    if (st.signedIn && !was) toast(t('ytNowSignedIn'), 'ok');
-    if (!$('#view-settings').hidden) renderSettings();
-  });
-  api.yt.status().then((st) => { S.yt = st; });
+  api.cookies.status().then((st) => { S.cookieInfo = st; });
   api.clipboard.onUrl((url) => {
     if (url === $('#urlInput').value.trim() || S.info?.url === url) return;
     clipUrl = url; $('#clipUrl').textContent = url; $('#clipBar').hidden = false;

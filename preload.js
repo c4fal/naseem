@@ -24,7 +24,6 @@ contextBridge.exposeInMainWorld('api', {
     openDir: () => inv('shell:openDir'), openExternal: (u) => inv('shell:openExternal', u), pickDir: () => inv('dialog:pickDir'),
   },
   images: { get: (slot) => inv('img:get', slot), pick: (slot) => inv('img:pick', slot), clear: (slot) => inv('img:clear', slot) },
-  yt: { status: () => inv('yt:status'), login: () => inv('yt:login'), logout: () => inv('yt:logout'), onStatus: on('yt:status') },
-  cookies: { import: () => inv('cookies:import'), clear: () => inv('cookies:clear') },
+  cookies: { status: () => inv('cookies:status'), import: () => inv('cookies:import'), clear: () => inv('cookies:clear') },
   clipboard: { read: () => inv('clipboard:read'), write: (t) => inv('clipboard:write', t), onUrl: on('clipboard:url') },
 });

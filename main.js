@@ -1,5 +1,5 @@
 // Naseem — video downloader (main process)
-const { app, BrowserWindow, ipcMain, dialog, shell, clipboard, Notification, Menu, nativeTheme, session } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, shell, clipboard, Notification, Menu, nativeTheme } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
@@ -76,60 +76,26 @@ function commonArgs(cookiePath) {
   return a;
 }
 
-// ---------- YouTube sign-in & cookies ----------
-// Cookies stay on this computer: they live in the app's own browser session (or an imported
-// cookies.txt) and are only handed to yt-dlp through a private file that is deleted after each run.
-const YT_PARTITION = 'persist:youtube';
+// ---------- cookies for sites that ask you to sign in (e.g. YouTube's "not a bot" check) ----------
+// Google blocks signing in inside app windows, so cookies come from the user's own browser
+// (--cookies-from-browser; Firefox works best on Windows) or from an imported cookies.txt.
+// An imported file is copied to a private per-run file for yt-dlp and deleted afterwards.
 const COOKIE_DIR = path.join(DATA, 'cookies');
 const IMPORTED_COOKIES = 'cookies-import.txt';
-const AUTH_COOKIES = new Set(['SAPISID', '__Secure-3PAPISID', 'LOGIN_INFO', 'SID']);
-const ytSession = () => session.fromPartition(YT_PARTITION);
-const isYtDomain = (d) => /(^|\.)(youtube|google)\.com$/i.test(String(d || '').replace(/^\./, ''));
-async function ytCookies() { try { return (await ytSession().cookies.get({})).filter((c) => isYtDomain(c.domain)); } catch { return []; } }
-async function ytSignedIn() { return (await ytCookies()).some((c) => AUTH_COOKIES.has(c.name)); }
-function netscapeLine(c) {
-  const dom = c.hostOnly ? c.domain.replace(/^\./, '') : (c.domain.startsWith('.') ? c.domain : '.' + c.domain);
-  const exp = c.session || !c.expirationDate ? 0 : Math.floor(c.expirationDate);
-  return [dom, c.hostOnly ? 'FALSE' : 'TRUE', c.path || '/', c.secure ? 'TRUE' : 'FALSE', exp, c.name, c.value].join('\t');
-}
 async function prepareCookies(tag) {
-  if (settings.cookiesBrowser) return null;
+  if (settings.cookiesBrowser || !settings.cookiesFile) return null;
   try {
+    const imported = path.join(DATA, settings.cookiesFile);
+    if (!fs.existsSync(imported)) return null;
     fs.mkdirSync(COOKIE_DIR, { recursive: true });
     const out = path.join(COOKIE_DIR, `run-${tag}.txt`);
-    const imported = settings.cookiesFile ? path.join(DATA, settings.cookiesFile) : null;
-    if (imported && fs.existsSync(imported)) { fs.copyFileSync(imported, out); return out; }
-    const list = await ytCookies();
-    if (!list.some((c) => AUTH_COOKIES.has(c.name))) return null;
-    fs.writeFileSync(out, '# Netscape HTTP Cookie File\n' + list.map(netscapeLine).join('\n') + '\n');
+    fs.copyFileSync(imported, out);
     return out;
   } catch { return null; }
 }
 const dropCookies = (p) => { if (p) fs.rm(p, { force: true }, () => {}); };
-async function ytStatus() { return { signedIn: await ytSignedIn(), cookiesFile: !!settings.cookiesFile }; }
-
-let loginWin = null;
-const chromeUA = () => app.userAgentFallback.replace(/\s(Electron|Naseem)\/\S+/gi, '');
-ipcMain.handle('yt:status', () => ytStatus());
-ipcMain.handle('yt:login', () => {
-  if (loginWin && !loginWin.isDestroyed()) { loginWin.focus(); return true; }
-  loginWin = new BrowserWindow({
-    width: 500, height: 720, parent: win, title: 'YouTube', backgroundColor: '#ffffff', autoHideMenuBar: true,
-    webPreferences: { partition: YT_PARTITION, contextIsolation: true, sandbox: true, nodeIntegration: false },
-  });
-  loginWin.webContents.setUserAgent(chromeUA());
-  loginWin.webContents.setWindowOpenHandler(({ url }) => { if (/^https:\/\//i.test(url)) loginWin.loadURL(url); return { action: 'deny' }; });
-  loginWin.webContents.on('did-navigate', async (_e, url) => {
-    if (/^https:\/\/(www|m)\.youtube\.com\//i.test(url) && (await ytSignedIn())) {
-      send('yt:status', await ytStatus());
-      setTimeout(() => { if (loginWin && !loginWin.isDestroyed()) loginWin.close(); }, 1200);
-    }
-  });
-  loginWin.on('closed', async () => { loginWin = null; send('yt:status', await ytStatus()); });
-  loginWin.loadURL('https://accounts.google.com/ServiceLogin?service=youtube&continue=' + encodeURIComponent('https://www.youtube.com/'));
-  return true;
-});
-ipcMain.handle('yt:logout', async () => { await ytSession().clearStorageData(); return ytStatus(); });
+const firefoxInstalled = () => fs.existsSync(path.join(app.getPath('appData'), 'Mozilla', 'Firefox', 'Profiles'));
+ipcMain.handle('cookies:status', () => ({ firefox: firefoxInstalled() }));
 ipcMain.handle('cookies:import', async () => {
   const r = await dialog.showOpenDialog(win, { properties: ['openFile'], filters: [{ name: 'cookies.txt', extensions: ['txt'] }] });
   if (r.canceled || !r.filePaths[0]) return { ok: false };
