@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <img alt="Version" src="https://img.shields.io/badge/version-1.0.3-818cf8?style=flat-square">
+  <img alt="Version" src="https://img.shields.io/badge/version-1.0.4-818cf8?style=flat-square">
   <img alt="Platform" src="https://img.shields.io/badge/platform-Windows%2010%20%7C%2011-0b0f16?style=flat-square">
   <img alt="Electron" src="https://img.shields.io/badge/Electron-45-47848F?style=flat-square&logo=electron&logoColor=white">
   <img alt="yt-dlp" src="https://img.shields.io/badge/engine-yt--dlp%20%2B%20FFmpeg-ff0033?style=flat-square">
@@ -58,7 +58,7 @@
 
 ## 🚀 Get started
 
-1. Download **`Naseem-Setup-1.0.3.exe`** (installer) or **`Naseem-Portable-1.0.3.exe`** (no install) from [**Releases**](https://github.com/c4fal/naseem/releases/latest).
+1. Download **`Naseem-Setup-1.0.4.exe`** (installer) or **`Naseem-Portable-1.0.4.exe`** (no install) from [**Releases**](https://github.com/c4fal/naseem/releases/latest).
 2. Open Naseem and press **Install engine**. It fetches yt-dlp and FFmpeg once (~100 MB).
 3. Paste a link and press **Fetch**, choose a quality, then **Download**.
 
@@ -124,7 +124,7 @@ docs/            README images
 
 ### طريقة الاستخدام
 
-1. نزّل ملف **`Naseem-Setup-1.0.3.exe`** أو النسخة المحمولة **`Naseem-Portable-1.0.3.exe`** من صفحة [**الإصدارات**](https://github.com/c4fal/naseem/releases/latest).
+1. نزّل ملف **`Naseem-Setup-1.0.4.exe`** أو النسخة المحمولة **`Naseem-Portable-1.0.4.exe`** من صفحة [**الإصدارات**](https://github.com/c4fal/naseem/releases/latest).
 2. افتح البرنامج واضغط **«تثبيت المحرك»** (مرة واحدة فقط).
 3. الصق الرابط، واختر الجودة، ثم اضغط **«تنزيل»**.
 
