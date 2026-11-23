@@ -67,6 +67,15 @@
 
 ### 📱 Android
 
+<table>
+  <tr>
+    <td width="25%"><img src="docs/android-home.png" alt="Naseem on Android: video preview"><p align="center"><sub>Video preview</sub></p></td>
+    <td width="25%"><img src="docs/android-downloads.png" alt="Naseem on Android: downloads in progress"><p align="center"><sub>Downloads</sub></p></td>
+    <td width="25%"><img src="docs/android-history.png" alt="Naseem on Android: download history"><p align="center"><sub>History</sub></p></td>
+    <td width="25%"><img src="docs/android-settings.png" alt="Naseem on Android: settings in the light theme"><p align="center"><sub>Light theme · English</sub></p></td>
+  </tr>
+</table>
+
 1. On your phone, download **`Naseem-Android-1.0.6-arm64-v8a.apk`** from the [**Android release**](https://github.com/c4fal/naseem/releases/tag/v1.0.6-android) (use `armeabi-v7a` for older 32-bit phones) and open it. Android asks once to allow installing apps from your browser.
 2. Paste a link, or **share** a link to Naseem from YouTube or any other app.
 3. Files are saved to **Download/Naseem**. Downloads continue when you switch apps.

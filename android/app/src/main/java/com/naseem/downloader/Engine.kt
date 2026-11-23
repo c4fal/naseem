@@ -72,8 +72,29 @@ object Engine {
         Notifications.createChannels(a)
         scope.launch(Dispatchers.IO) {
             workRoot.deleteRecursively() // queue is in memory only, so leftovers belong to no job
-            ready.complete(runCatching { YoutubeDL.init(a); FFmpeg.init(a) }.exceptionOrNull()?.also { Log.e(TAG, "engine init failed", it) })
+            val err = runCatching { YoutubeDL.init(a); FFmpeg.init(a) }.exceptionOrNull()?.also { Log.e(TAG, "engine init failed", it) }
+            if (err == null) autoUpdate() // before completing, so engineReady() sees the update
+            ready.complete(err)
         }
+    }
+
+    // The yt-dlp bundled in the APK is months old and YouTube rejects it, so refresh it daily.
+    @Volatile private var updating: kotlinx.coroutines.Job? = null
+
+    private fun autoUpdate() {
+        if (System.currentTimeMillis() - prefs.getLong("ytdlpUpdatedAt", 0) < 24 * 3600 * 1000L) return
+        updating = scope.launch(Dispatchers.IO) {
+            runCatching { YoutubeDL.updateYoutubeDL(app, YoutubeDL.UpdateChannel.STABLE) }
+                .onSuccess { prefs.edit().putLong("ytdlpUpdatedAt", System.currentTimeMillis()).apply(); ytdlpVersion = null }
+                .onFailure { Log.w(TAG, "yt-dlp auto-update failed", it) }
+        }
+    }
+
+    /** Waits for the engine, including a running yt-dlp update so it isn't replaced mid-use. */
+    private suspend fun engineReady(): Throwable? {
+        val err = ready.await()
+        updating?.let { kotlinx.coroutines.withTimeoutOrNull(90_000) { it.join() } }
+        return err
     }
 
     val lang: String get() = settings.optString("lang", "ar")
@@ -142,7 +163,7 @@ object Engine {
 
     // ---------- engine ----------
     private suspend fun engineStatus(): JSONObject {
-        val err = ready.await()
+        val err = engineReady()
         if (err == null && ytdlpVersion == null) ytdlpVersion = withContext(Dispatchers.IO) {
             runCatching { YoutubeDL.execute(YoutubeDLRequest(emptyList<String>()).addOption("--version")).out.trim() }.getOrNull()
         }
@@ -150,10 +171,11 @@ object Engine {
     }
 
     private suspend fun updateEngine(): JSONObject {
-        if (ready.await() != null) return JSONObject().put("ok", false).put("error", "ENGINE_MISSING")
+        if (engineReady() != null) return JSONObject().put("ok", false).put("error", "ENGINE_MISSING")
         return withContext(Dispatchers.IO) {
             try {
                 val status = YoutubeDL.updateYoutubeDL(app, YoutubeDL.UpdateChannel.STABLE)
+                prefs.edit().putLong("ytdlpUpdatedAt", System.currentTimeMillis()).apply()
                 ytdlpVersion = null
                 val v = runCatching { YoutubeDL.execute(YoutubeDLRequest(emptyList<String>()).addOption("--version")).out.trim() }.getOrNull()
                 ytdlpVersion = v
@@ -181,7 +203,7 @@ object Engine {
     }
 
     private suspend fun fetchInfo(url: String): JSONObject {
-        if (ready.await() != null) return JSONObject().put("ok", false).put("error", "ENGINE_MISSING")
+        if (engineReady() != null) return JSONObject().put("ok", false).put("error", "ENGINE_MISSING")
         return withContext(Dispatchers.IO) {
             val tmp = File(app.cacheDir, "fetch-${System.nanoTime()}")
             try {
@@ -338,7 +360,7 @@ object Engine {
     private fun start(j: Job) {
         update(j, true) { status = "starting"; percent = 0.0; error = null; speed = null; eta = null }
         scope.launch {
-            if (ready.await() != null) { update(j, true) { status = "error"; error = "ENGINE_MISSING" }; pump(); return@launch }
+            if (engineReady() != null) { update(j, true) { status = "error"; error = "ENGINE_MISSING" }; pump(); return@launch }
             if (j.status != "starting") return@launch
             try {
                 val saved = withContext(Dispatchers.IO) {
