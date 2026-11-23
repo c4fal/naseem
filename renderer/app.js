@@ -26,6 +26,7 @@ const I18N = {
     s_cookiesFile: 'ملف الكوكيز (cookies.txt)', s_cookiesFileHint: 'بديل: صدّر كوكيز يوتيوب من متصفحك واختر الملف', cookiesLoaded: 'محمّل', cookiesImport: 'اختيار ملف', badCookies: 'الملف ليس بصيغة cookies.txt',
     botHint: 'يوتيوب يطلب التحقق من أنك لست روبوتًا. سجّل الدخول إلى يوتيوب في Firefox ثم اضغط الزر.', botHintNoFf: 'يوتيوب يطلب التحقق من أنك لست روبوتًا. صدّر كوكيز يوتيوب من متصفحك كملف cookies.txt واختره.',
     s_cookies: 'استخدام كوكيز المتصفح', s_cookiesHint: 'لتحقق يوتيوب والمحتوى المقيد. Firefox هو الأفضل على ويندوز', none: 'بدون', s_proxy: 'بروكسي', s_proxyHint: 'مثل socks5://127.0.0.1:1080', s_rate: 'حد السرعة', s_rateHint: 'مثل 2M أو 500K (فارغ = بلا حد)',
+    notifyOn: 'الإشعارات مفعّلة', notifyOff: 'الإشعارات معطّلة',
     s_clip: 'مراقبة الحافظة', s_clipHint: 'اقتراح الروابط المنسوخة تلقائيًا', s_autofetch: 'جلب تلقائي عند اللصق', s_notify: 'إشعار عند اكتمال التنزيل', s_lang: 'اللغة', s_theme: 'المظهر', dark: 'داكن', light: 'فاتح', system: 'حسب النظام', lain: 'لين (Lain)', s_bg: 'صورة الخلفية', s_bgHint: 'صورة من جهازك تظهر خلف البرنامج', s_bgPick: 'اختيار صورة', s_bgClear: 'إزالة', s_bgVis: 'وضوح الصورة', bgTooBig: 'الصورة أكبر من 20 ميغابايت', s_art: 'صورة جانبية', s_artHint: 'صورة أو GIF في زاوية البرنامج (الأجمل بخلفية شفافة)', s_artVis: 'وضوح الصورة الجانبية', s_motion: 'الحركة', s_motionHint: 'تأثيرات مظهر Lain المتحركة', motionOn: 'تشغيل', motionAuto: 'حسب إعدادات ويندوز', motionOff: 'إيقاف',
     e_ytdlp: 'yt-dlp', e_ffmpeg: 'FFmpeg', e_update: 'تحديث المحرك', e_reinstall: 'إعادة التثبيت', notInstalled: 'غير مثبت', updating: 'جارٍ التحديث…', installing: 'جارٍ التثبيت…', e_done: 'تم بنجاح',
     eng_ytdlp: 'تنزيل yt-dlp', eng_ffmpeg: 'تنزيل FFmpeg', eng_extract: 'فك الضغط…', engineReady: 'المحرك جاهز', engineMissing: 'المحرك غير مثبت',
@@ -54,6 +55,7 @@ const I18N = {
     s_cookiesFile: 'Cookies file (cookies.txt)', s_cookiesFileHint: 'Alternative: export your YouTube cookies from your browser and pick the file', cookiesLoaded: 'Loaded', cookiesImport: 'Choose file', badCookies: 'That file is not in cookies.txt format',
     botHint: 'YouTube wants to check you are not a bot. Sign in to YouTube in Firefox, then press the button.', botHintNoFf: 'YouTube wants to check you are not a bot. Export your YouTube cookies from your browser as cookies.txt and choose the file.',
     s_cookies: 'Use browser cookies', s_cookiesHint: 'For YouTube checks and restricted content. Firefox works best on Windows', none: 'None', s_proxy: 'Proxy', s_proxyHint: 'e.g. socks5://127.0.0.1:1080', s_rate: 'Speed limit', s_rateHint: 'e.g. 2M or 500K (empty = unlimited)',
+    notifyOn: 'Notifications on', notifyOff: 'Notifications off',
     s_clip: 'Watch clipboard', s_clipHint: 'Suggest copied links automatically', s_autofetch: 'Auto-fetch on paste', s_notify: 'Notify when a download finishes', s_lang: 'Language', s_theme: 'Theme', dark: 'Dark', light: 'Light', system: 'System', lain: 'Lain', s_bg: 'Background image', s_bgHint: 'A picture from your computer shown behind the app', s_bgPick: 'Choose image', s_bgClear: 'Remove', s_bgVis: 'Image visibility', bgTooBig: 'Image is larger than 20 MB', s_art: 'Side image', s_artHint: 'A picture or GIF in the corner of the app (transparent ones look best)', s_artVis: 'Side image visibility', s_motion: 'Animations', s_motionHint: 'Moving effects of the Lain theme', motionOn: 'On', motionAuto: 'Follow Windows', motionOff: 'Off',
     e_ytdlp: 'yt-dlp', e_ffmpeg: 'FFmpeg', e_update: 'Update engine', e_reinstall: 'Reinstall', notInstalled: 'Not installed', updating: 'Updating…', installing: 'Installing…', e_done: 'Done',
     eng_ytdlp: 'Downloading yt-dlp', eng_ffmpeg: 'Downloading FFmpeg', eng_extract: 'Extracting…', engineReady: 'Engine ready', engineMissing: 'Engine missing',
@@ -80,6 +82,8 @@ const ICONS = {
   music: '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
   alert: '<circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/>',
   external: '<path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
+  bell: '<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>',
+  'bell-off': '<path d="M13.7 21a2 2 0 0 1-3.4 0"/><path d="M17 17H3s3-2 3-9a6 6 0 0 1 .3-1.8"/><path d="M8.7 3A6 6 0 0 1 18 8c0 2.7.8 4.7 1.7 6"/><path d="m2 2 20 20"/>',
 };
 
 // ---------------- helpers ----------------
@@ -454,6 +458,7 @@ async function saveSetting(patch) {
   S.settings = await api.settings.set(patch);
   if ('lang' in patch) { applyLang(); renderSettings(); renderEnginePill(); for (const j of S.jobs.values()) { const el = document.getElementById(`job-${j.id}`); if (el) fillJob(el, j); } fillQualitySelect($('#batchQuality'), $('#batchQuality').value); }
   if ('theme' in patch || 'motion' in patch) applyTheme();
+  if ('notify' in patch || 'lang' in patch) syncNotifyBtn();
 }
 
 function field(label, hint, control) { return h('div', { class: 'field' }, h('div', { class: 'lab' }, label, hint ? h('small', {}, hint) : null), control); }
@@ -554,11 +559,23 @@ function renderSettings() {
   );
 }
 
+// ---------------- notify toggle ----------------
+function syncNotifyBtn() {
+  const btn = $('#notifyToggleBtn');
+  if (!btn || !S.settings) return;
+  const on = !!S.settings.notify;
+  btn.setAttribute('aria-pressed', String(on));
+  btn.title = t(on ? 'notifyOn' : 'notifyOff');
+  btn.querySelector('.ic').innerHTML = `<svg viewBox="0 0 24 24">${ICONS[on ? 'bell' : 'bell-off'] || ''}</svg>`;
+  btn.classList.toggle('muted', !on);
+}
+
 // ---------------- events ----------------
 function bind() {
   $$('[data-icon]').forEach((el) => el.replaceWith(Object.assign(icon(el.dataset.icon, el.className), {})));
   $$('.nav').forEach((b) => b.addEventListener('click', () => showView(b.dataset.view)));
   $('#openDirBtn').addEventListener('click', () => api.shell.openDir());
+  $('#notifyToggleBtn').addEventListener('click', async () => { await saveSetting({ notify: !S.settings.notify }); if (!$('#view-settings').hidden) renderSettings(); });
   $('#installEngineBtn').addEventListener('click', () => installEngine('all'));
 
   const input = $('#urlInput');
@@ -628,6 +645,7 @@ function bind() {
   applyLang();
   bind();
   applyLang();
+  syncNotifyBtn();
   for (const j of await api.download.list()) { S.jobs.set(j.id, j); $('#queue').prepend(jobCard(j)); }
   renderQueueMeta();
   refreshEngine();
