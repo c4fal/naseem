@@ -1,0 +1,52 @@
+/* Phone layout on top of the desktop styles.css: sidebar becomes a bottom bar, cards stack. */
+:root { --nav-h: 62px; -webkit-tap-highlight-color: transparent; }
+
+.layout { flex-direction: column-reverse; }
+.side { width: 100%; height: var(--nav-h); flex-direction: row; align-items: stretch; padding: 6px 8px; gap: 4px; border-inline-end: 0; border-top: 1px solid var(--line); }
+.nav { position: relative; flex: 1; flex-direction: column; justify-content: center; gap: 3px; padding: 4px; font-size: 11.5px; }
+.nav.active, [dir="rtl"] .nav.active { box-shadow: inset 0 3px 0 var(--accent); }
+.nav:hover { background: none; }
+.nav.active:hover { background: var(--panel-2); }
+.badge { position: absolute; top: 3px; inset-inline-end: calc(50% - 26px); margin: 0; }
+.side-foot { margin: 0; flex-direction: row; align-items: center; }
+#openDirBtn, .engine-pill { display: none; }
+#notifyToggleBtn { height: 100%; padding: 0 16px; border: 0; background: none; }
+
+main { min-height: 0; padding: 14px 12px 28px; }
+main::-webkit-scrollbar { width: 0; }
+.bg-art, .side-art { top: 40px; bottom: var(--nav-h); }
+.bg-art { inset-inline-start: 0; }
+.side-art { width: 70vw; }
+
+.hero { padding-top: 6px; }
+.hero h1 { font-size: 20px; }
+.hero p { font-size: 13px; margin-bottom: 14px; }
+.urlbar { padding-inline-start: 10px; gap: 4px; }
+.urlbar .primary, .urlbar .ghost { padding: 9px 12px; }
+
+.section-head { margin-top: 22px; }
+.section-head h2 { font-size: 16px; }
+.search { flex: 1 1 100%; width: auto; }
+
+.job { grid-template-columns: 72px 1fr; gap: 10px; }
+.job .jt { width: 72px; }
+.job .acts { grid-column: 1 / -1; justify-content: flex-end; flex-wrap: wrap; margin-top: -4px; }
+.icon-btn { width: 38px; height: 38px; }
+
+.pv .thumb { max-width: none; }
+.pl-list { max-height: 50vh; }
+.time-in { width: 76px; }
+
+.stat { flex: 1 1 calc(50% - 5px); min-width: 0; }
+
+.group { padding: 4px 14px; }
+.field { flex-wrap: wrap; gap: 8px 12px; }
+.field .lab { flex: 1 1 160px; }
+.field input[type=text], .range, .field select { width: 100%; max-width: 100%; }
+.path { max-width: 100%; }
+
+.toasts { bottom: calc(var(--nav-h) + 12px); }
+.toast { max-width: 92vw; }
+
+/* desktop-only controls: browser cookies, choosing the save folder, drag & drop */
+.field:has(select option[value="vivaldi"]), .field:has(.path) button, .drop { display: none !important; }

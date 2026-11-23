@@ -65,6 +65,14 @@
 > [!TIP]
 > If a site suddenly stops working, go to **Settings → Engine → Update engine**. Sites change often and yt-dlp updates quickly.
 
+### 📱 Android
+
+1. On your phone, download **`Naseem-Android-1.0.6-arm64-v8a.apk`** from the [**Android release**](https://github.com/c4fal/naseem/releases/tag/v1.0.6-android) (use `armeabi-v7a` for older 32-bit phones) and open it. Android asks once to allow installing apps from your browser.
+2. Paste a link, or **share** a link to Naseem from YouTube or any other app.
+3. Files are saved to **Download/Naseem**. Downloads continue when you switch apps.
+
+Needs Android 10 or newer. The engine is built in, so there is nothing to install.
+
 ## 🛠️ Build from source
 
 Requires [Node.js](https://nodejs.org) 20 or newer.
@@ -83,6 +91,15 @@ npm run dist
 > [!NOTE]
 > NSIS fails on very long folder paths. If the build errors with `could not open file`, copy the project to a short path such as `C:\naseem` and build there.
 
+Build the Android app (needs JDK 17 and the Android SDK; run `npm install` first, since it reuses `renderer/` and the fonts):
+
+```bash
+cd android
+./gradlew assembleRelease
+```
+
+Release APKs are signed with the key described in `~/.naseem/keystore.properties`; without that file, use `./gradlew assembleDebug`.
+
 <details>
 <summary><b>Project structure</b></summary>
 
@@ -94,6 +111,7 @@ renderer/
   styles.css     Dark / light themes, RTL support
   app.js         UI logic and Arabic / English translations
 build/icon.png   App icon
+android/         Android app: the same renderer/ screens in a WebView, with a Kotlin engine (youtubedl-android)
 docs/            README images
 ```
 
@@ -127,6 +145,14 @@ docs/            README images
 1. نزّل ملف **`Naseem-Setup-1.0.6.exe`** أو النسخة المحمولة **`Naseem-Portable-1.0.6.exe`** من صفحة [**الإصدارات**](https://github.com/c4fal/naseem/releases/latest).
 2. افتح البرنامج واضغط **«تثبيت المحرك»** (مرة واحدة فقط).
 3. الصق الرابط، واختر الجودة، ثم اضغط **«تنزيل»**.
+
+### 📱 أندرويد
+
+1. نزّل على هاتفك ملف **`Naseem-Android-1.0.6-arm64-v8a.apk`** من [**إصدار أندرويد**](https://github.com/c4fal/naseem/releases/tag/v1.0.6-android) (أو `armeabi-v7a` للهواتف القديمة) وافتحه. سيطلب أندرويد مرة واحدة السماح بتثبيت التطبيقات من المتصفح.
+2. الصق الرابط، أو **شارك** الرابط إلى نسيم من يوتيوب أو أي تطبيق آخر.
+3. تُحفظ الملفات في مجلد **Download/Naseem**، ويستمر التنزيل عند الانتقال إلى تطبيق آخر.
+
+يتطلب أندرويد 10 أو أحدث، والمحرك مدمج فلا حاجة لتثبيت أي شيء.
 
 </div>
 
